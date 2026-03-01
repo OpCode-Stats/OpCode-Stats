@@ -49,7 +49,7 @@
 \begin{abstract}
 \noindent
 Compiled binary executables, when viewed as flat sequences of machine opcodes,
-exhibit a rich statistical structure that closely parallels properties observed
+exhibit rich statistical structure that shares several properties observed
 in natural language and biological sequences.  We present \emph{Binary DNA}, an
 open-source toolkit that applies computational biology and information-theoretic
 techniques to the systematic study of program instruction sequences.
@@ -504,14 +504,12 @@ Under \lzma{} the pattern is consistent: real $0.185$ vs.\ shuffled $0.304$
 vs.\ random $0.560$.  LZ78 normalised complexity ($\tilde{c} = K/\log_2 N$) has a median of $630$
 phrases-per-log-bit for real binaries vs.\ $45{,}187$ for unigram-shuffled
 sequences and $87{,}881$ for random sequences.
-Since $K$ scales as $\Theta(N/\log N)$ for high-entropy sources, $\tilde{c}$
-is expected to be on the order of $N/\log_2 N$ for a near-uniform source,
-which explains the large random-baseline magnitude (to calibrate: a sequence of
-$N\!=\!10^6$ tokens would yield $\tilde{c} \approx N/\log_2 N \approx 50{,}000$
-at maximum entropy, so $\tilde{c}\!=\!87{,}881$ for our random baseline is
-consistent with near-maximum-entropy behaviour while $\tilde{c}\!=\!630$
-is roughly $70\times$ below that floor, placing real instruction streams
-substantially below both baselines).
+The large random-baseline magnitude ($\tilde{c}\!=\!87{,}881$) reflects
+near-maximum-entropy behaviour; real instruction streams ($\tilde{c}\!=\!630$)
+are roughly $140\times$ below that value and the unigram-shuffled baseline
+($\tilde{c}\!=\!45{,}187$) sits between, confirming strong redundancy beyond
+unigram skew.  All $\tilde{c}$ values are relative to the random baseline;
+the key result is the ordering Real $\ll$ Shuffled $\ll$ Random.
 
 \begin{table}[h]
 \centering
@@ -656,8 +654,8 @@ between-category pairs under both compressors:
   \item \lzma{}: mean within $= 0.935$, mean between $= 0.969$,
         $U = 19.0$, $p = 0.006$, rank-biserial $r = 0.665$.
 \end{itemize}
-The effect size ($r \approx 0.6$--$0.7$) is moderate-to-large by conventional
-thresholds~\cite{cohen1988statistical}, indicating that category membership
+The effect size ($r \approx 0.6$--$0.7$) indicates substantial separation:
+category membership
 is a meaningful predictor of NCD distance even when absolute distances are
 near the theoretical maximum.  The lzma compressor yields both a larger
 within/between gap and a stronger effect size, consistent with its superior
@@ -981,7 +979,7 @@ low-dimensional, highly structured manifold shaped by:
 
 The combination of a highly concentrated vocabulary (MLE Zipf exponent
 $\hat{\alpha}_{\text{MLE}} \approx 1.4$, OLS $\approx 3.4$), rapidly
-decaying entropy rates, near-maximum compressibility, and a manifold
+decaying entropy rates, very high compressibility relative to shuffled and random baselines, and a manifold
 dimensionality of $d_{95} \approx 8$ out of 200 features paints a consistent
 picture: programs are \emph{extraordinarily predictable} at the instruction
 level compared to arbitrary sequences of the same alphabet.
