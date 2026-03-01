@@ -280,6 +280,22 @@
     "max_distance": 0.9928737638161722,
     "median_distance": 0.9758580570098895
   },
+  "category_separation": {
+    "n_within_pairs": 5,
+    "n_between_pairs": 86,
+    "mean_within": 0.9354250258119222,
+    "mean_between": 0.9693905782530057,
+    "per_category_mean": {
+      "text_processing": 0.8833063209076175,
+      "compression": 0.9382240496007631,
+      "editors": 0.979146659349705
+    },
+    "mannwhitney_U": 72.0,
+    "p_value": 0.006534380132223702,
+    "effect_size_r": 0.6651162790697674,
+    "significant": true,
+    "interpretation": "Within-category NCD (mean 0.935) is significantly smaller than between-category NCD (mean 0.969), p=0.0065, r=0.665 (Mann-Whitney U, one-sided)."
+  },
   "most_similar_pairs": [
     {
       "binary1": "grep",

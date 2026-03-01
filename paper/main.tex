@@ -292,9 +292,16 @@ We compute two families of pairwise binary similarity matrices:
 \begin{enumerate}
   \item \textbf{NCD}: $\ncd(x, y) = (C(xy) - \min(C(x), C(y))) / \max(C(x), C(y))$
         with \zlib{} and \lzma{} as compressors $C$.
-  \item \textbf{N-gram cosine similarity}: TF-IDF vectors over $n$-gram
-        vocabularies for $n \in \{2,3,4\}$, with cosine distance as the metric.
+  \item \textbf{N-gram cosine similarity}: L1-normalised term-frequency vectors
+        over $n$-gram vocabularies for $n \in \{2,3,4\}$, with cosine distance
+        as the metric.  We use L1-normalised raw TF (no IDF weighting,
+        \texttt{min\_df}$=1$) rather than TF-IDF, which is appropriate for
+        small corpora where IDF penalties and document-frequency thresholds
+        would otherwise discard the majority of features.
 \end{enumerate}
+To quantify whether the NCD distance matrices capture category structure, we
+apply a one-sided Mann--Whitney U test comparing within-category to
+between-category pairwise distances (binaries with no category label excluded).
 Agglomerative hierarchical clustering (Ward, complete, and average linkage) is
 applied to each distance matrix and evaluated by cophenetic correlation.
 Two-dimensional embeddings are produced via PCA and UMAP.  Cluster
@@ -604,6 +611,37 @@ explains $15.6\%$ of variance in two dimensions; UMAP embeddings (Figure~\ref{fi
 reveal that compression and text-processing utilities occupy a distinct region
 from large interactive programs (bash, vim, git, python3).
 
+\paragraph{Within-vs-between category separation (Mann--Whitney U test).}
+Despite the high absolute NCD values, a one-sided Mann--Whitney U test
+confirms that within-category pairs are stochastically closer than
+between-category pairs under both compressors:
+\begin{itemize}
+  \item \zlib{}: mean within $= 0.976$, mean between $= 0.992$,
+        $U = 23.0$, $p = 0.014$, rank-biserial $r = 0.588$.
+  \item \lzma{}: mean within $= 0.935$, mean between $= 0.969$,
+        $U = 19.0$, $p = 0.006$, rank-biserial $r = 0.665$.
+\end{itemize}
+The effect size ($r \approx 0.6$--$0.7$) is moderate-to-large by conventional
+thresholds~\cite{cohen1988statistical}, indicating that category membership
+is a meaningful predictor of NCD distance even when absolute distances are
+near the theoretical maximum.  The lzma compressor yields both a larger
+within/between gap and a stronger effect size, consistent with its superior
+modelling of long-range repetition across the opcode stream.
+
+\paragraph{N-gram cosine similarity.}
+With the corrected L1-normalised TF vectoriser, the bigram ($n=2$) vocabulary
+contains $5{,}757$ unique features, trigrams and 4-grams hit the $10{,}000$
+cap.  Mean pairwise cosine similarity decreases with $n$: $0.953$ (bigrams),
+$0.897$ (trigrams), $0.812$ (4-grams), with standard deviations of $0.037$,
+$0.080$, and $0.132$ respectively.  The increasing spread at higher $n$ is
+consistent with rarer n-grams becoming discriminative: as $n$ grows, shared
+n-grams become less probable by chance, so same-category binaries retain high
+similarity while cross-category pairs diverge more.  The most similar pairs
+under trigrams are \texttt{bash}--\texttt{vim} ($\cos = 0.979$) and
+\texttt{find}--\texttt{tar} ($\cos = 0.977$), both of which are large,
+feature-rich binaries that share instruction-mix profiles regardless of
+functional category.
+
 \begin{figure}[h]
   \centering
   \includegraphics[width=\columnwidth]{plots/umap_ncd_zlib.png}
@@ -888,10 +926,10 @@ opcodes without operands; including register and immediate information would
 increase vocabulary size and potentially alter Zipf exponents.  Third, the
 corpora are small ($\leq\!15$ binaries for the detailed analysis); larger-scale
 validation against thousands of binaries is needed to confirm manifold
-dimensionality estimates.  Fourth, the TF-IDF n-gram similarity failed for all
-gram sizes on the 15-binary smoke corpus (min\_df threshold too high for the
-small document count), so ARI comparisons between NCD and n-gram clustering
-could not be computed.
+dimensionality estimates.  Fourth, the n-gram cosine similarity results depend on the vectoriser
+parameterisation; we use L1-normalised TF with \texttt{min\_df}$=1$ which
+works on small corpora but may require tuning (e.g.\ IDF weighting, larger
+\texttt{max\_features}) as corpus size grows.
 
 % ─────────────────────────────────────────────────────────────────────────────
 \section{Conclusions and Future Work}

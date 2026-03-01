@@ -21,20 +21,24 @@ from analysis.ngrams import extract_ngrams
 logger = logging.getLogger(__name__)
 
 class NgramSimilarityAnalyzer:
-    """Analyzer for n-gram based binary similarity using TF-IDF."""
-    
-    def __init__(self, n: int = 3, max_features: int = 10000, min_df: int = 2):
+    """Analyzer for n-gram based binary similarity using L1-normalised term frequency."""
+
+    def __init__(self, n: int = 3, max_features: int = 10000):
         """
         Initialize n-gram similarity analyzer.
-        
+
         Args:
             n: N-gram length (default: trigrams)
             max_features: Maximum number of n-grams to consider
-            min_df: Minimum document frequency for n-grams
+
+        Note: uses L1-normalised raw term frequency (no IDF weighting, min_df=1)
+        so that every n-gram observed in at least one binary is retained.
+        IDF down-weights common n-grams which is appropriate for large corpora,
+        but on small corpora (< ~30 documents) it distorts distances and causes
+        many n-grams to be dropped by min_df thresholds.
         """
         self.n = n
         self.max_features = max_features
-        self.min_df = min_df
         self.tfidf_vectorizer = None
         self.feature_names = None
     
@@ -50,9 +54,13 @@ class NgramSimilarityAnalyzer:
                 documents.append("")
                 continue
             
-            # Extract n-grams and join as space-separated string
+            # Extract n-grams; join opcodes with '_' so each n-gram becomes
+            # a single token (e.g. "mov_lea_call") that the vectorizer
+            # tokenizes atomically.  Space-joining within n-grams caused the
+            # greedy multi-word token_pattern to swallow the entire document
+            # as a single feature.
             ngrams = extract_ngrams(sequence, self.n)
-            ngram_strings = [' '.join(ngram) for ngram in ngrams]
+            ngram_strings = ['_'.join(ngram) for ngram in ngrams]
             document = ' '.join(ngram_strings)
             documents.append(document)
         
@@ -71,12 +79,16 @@ class NgramSimilarityAnalyzer:
         # Convert binaries to n-gram documents
         documents = self._extract_ngram_documents(binaries)
         
-        # Initialize TF-IDF vectorizer
+        # L1-normalised term frequency: use_idf=False + norm='l1', min_df=1
+        # This is equivalent to normalised n-gram frequency histograms and
+        # works correctly on corpora as small as 2 documents.
         self.tfidf_vectorizer = TfidfVectorizer(
             max_features=self.max_features,
-            min_df=self.min_df,
-            ngram_range=(1, 1),  # Already using n-grams at document level
-            token_pattern=r'(?u)\b\w+(?:\s+\w+)*\b'  # Allow multi-word tokens
+            min_df=1,
+            use_idf=False,
+            norm='l1',
+            ngram_range=(1, 1),   # n-grams already encoded as single tokens
+            token_pattern=r'(?u)\b[\w]+(?:_[\w]+)*\b',  # matches "mov_lea_call"
         )
         
         try:
@@ -148,7 +160,7 @@ def run_ngram_similarity_analysis(binaries: List[Binary], output_dir: Path) -> D
         logger.info(f"Computing similarity with {n}-grams...")
         
         try:
-            analyzer = NgramSimilarityAnalyzer(n=n)
+            analyzer = NgramSimilarityAnalyzer(n=n, max_features=10000)
             tfidf_matrix, feature_names = analyzer.compute_tfidf_matrix(binaries)
             
             if tfidf_matrix.shape[1] <= 1:

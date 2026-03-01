@@ -13,6 +13,7 @@ import numpy as np
 import logging
 from typing import List, Dict, Tuple, Optional
 from pathlib import Path
+from scipy.stats import mannwhitneyu
 import sys
 sys.path.append(str(Path(__file__).parent.parent))
 
@@ -133,6 +134,77 @@ class NCDCalculator:
         logger.info(f"NCD matrix computed: avg={np.mean(ncd_matrix[np.triu_indices(n, k=1)]):.3f}")
         return ncd_matrix
 
+def evaluate_category_separation(ncd_matrix: np.ndarray, binaries: List[Binary]) -> Dict:
+    """
+    Within-vs-between category Mann-Whitney U test on NCD distances.
+
+    Splits all pairwise distances into two groups:
+      within  — both binaries share the same category label
+      between — binaries have different category labels (or one has None)
+
+    Returns the one-sided Mann-Whitney U statistic and p-value testing
+    H1: within-category distances are stochastically smaller than between-category
+    distances, plus rank-biserial effect size r = 1 - 2U/(n_within * n_between),
+    per-category mean distances, and an interpretation string.
+
+    Binaries with category=None are excluded from both groups.
+    """
+    names = [b.name for b in binaries]
+    cats  = [b.category for b in binaries]
+    n = len(binaries)
+
+    within_dists:  list = []
+    between_dists: list = []
+    per_category: dict = {}
+
+    for i in range(n):
+        for j in range(i + 1, n):
+            ci, cj = cats[i], cats[j]
+            if ci is None or cj is None:
+                continue
+            d = float(ncd_matrix[i, j])
+            if ci == cj:
+                within_dists.append(d)
+                per_category.setdefault(ci, []).append(d)
+            else:
+                between_dists.append(d)
+
+    result: Dict = {
+        'n_within_pairs':  len(within_dists),
+        'n_between_pairs': len(between_dists),
+        'mean_within':  float(np.mean(within_dists))  if within_dists  else None,
+        'mean_between': float(np.mean(between_dists)) if between_dists else None,
+        'per_category_mean': {
+            cat: float(np.mean(dists)) for cat, dists in per_category.items()
+        },
+    }
+
+    if len(within_dists) < 2 or len(between_dists) < 2:
+        result['note'] = 'Insufficient pairs for significance test'
+        return result
+
+    stat, pval = mannwhitneyu(within_dists, between_dists, alternative='less')
+    n1, n2 = len(within_dists), len(between_dists)
+    # rank-biserial correlation (effect size): r = 1 - 2U / (n1*n2)
+    r = float(1.0 - 2.0 * stat / (n1 * n2))
+
+    result.update({
+        'mannwhitney_U':  float(stat),
+        'p_value':        float(pval),
+        'effect_size_r':  r,
+        'significant':    bool(pval < 0.05),
+        'interpretation': (
+            f"Within-category NCD (mean {result['mean_within']:.3f}) is "
+            f"{'significantly' if pval < 0.05 else 'not significantly'} smaller "
+            f"than between-category NCD (mean {result['mean_between']:.3f}), "
+            f"p={pval:.4f}, r={r:.3f} (Mann-Whitney U, one-sided)."
+        ),
+    })
+
+    logger.info(result['interpretation'])
+    return result
+
+
 def run_ncd_analysis(binaries: List[Binary], output_dir: Path) -> Dict:
     """Run complete NCD analysis with multiple compressors."""
     logger.info("Running Normalized Compression Distance analysis...")
@@ -154,6 +226,8 @@ def run_ncd_analysis(binaries: List[Binary], output_dir: Path) -> Dict:
             # Compute statistics
             upper_triangle = ncd_matrix[np.triu_indices(len(binaries), k=1)]
             
+            category_sep = evaluate_category_separation(ncd_matrix, binaries)
+
             compressor_results = {
                 'matrix': ncd_matrix.tolist(),
                 'binary_names': [b.name for b in binaries],
@@ -164,6 +238,7 @@ def run_ncd_analysis(binaries: List[Binary], output_dir: Path) -> Dict:
                     'max_distance': float(np.max(upper_triangle)),
                     'median_distance': float(np.median(upper_triangle))
                 },
+                'category_separation': category_sep,
                 'most_similar_pairs': get_most_similar_pairs(ncd_matrix, binaries, top_k=5),
                 'most_different_pairs': get_most_different_pairs(ncd_matrix, binaries, top_k=5)
             }
