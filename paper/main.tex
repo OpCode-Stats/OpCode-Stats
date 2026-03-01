@@ -245,33 +245,34 @@ for $n > 1$ confirms genuine multi-opcode dependencies.
 
 \subsection{Compression and LZ Complexity}
 
-We measure two proxies for Kolmogorov complexity:
+We measure two practical proxies for Kolmogorov complexity:
 \begin{enumerate}
   \item \textbf{Compression ratio} $\rho = |C(s)| / |s|$ using \zlib{} and
         \lzma{} on the UTF-8 encoded opcode stream.
   \item \textbf{LZ78 complexity}~\cite{ziv1978compression}: the number of
         distinct phrases $K$ produced by the LZ78 factorisation of the
         integer-encoded opcode sequence of length $N$, reported as the
-        normalised statistic $\tilde{c} = K / \log_2 N$ (phrase count per
-        log-bit of sequence length).  For high-entropy sources, the expected
-        phrase count scales as $K = \Theta(N/\log N)$, so $\tilde{c}$ is
-        correspondingly large for random sequences at $N \sim 10^6$.  Highly
-        structured (more compressible) sequences yield substantially smaller
-        $\tilde{c}$.
+        normalised statistic $\tilde{c} = K / \log_2 N$ (phrases per log-bit of
+        sequence length).  For high-entropy sources, the expected phrase count
+        scales as $K = \Theta(N/\log N)$, hence $\tilde{c} = \Theta(N/\log^2 N)$:
+        absolute values grow with $N$ and should be interpreted primarily
+        \emph{relative} to suitable baselines.  More structured (more
+        compressible) sequences produce substantially smaller $K$ and $\tilde{c}$.
 \end{enumerate}
-Both are compared to two baselines:
+
+Both metrics are compared to two baselines:
 \begin{itemize}
   \item \emph{Uniform-random baseline}: sequences of the same length drawn
-        uniformly from $\mathcal{V}$ (ten replicates, averaged).  Captures
-        the maximum-entropy reference.
+        uniformly from $\mathcal{V}$ (ten replicates, averaged), capturing a
+        maximum-entropy reference.
   \item \emph{Unigram-shuffled baseline}: each binary's opcode sequence is
-        randomly permuted (five replicates), preserving the marginal frequency
-        distribution while destroying all sequential order.  The gap between
-        corpus and unigram-shuffled ratios isolates compression gains from
-        \emph{sequential} structure only, factoring out Zipfian skew.
+        randomly permuted (five replicates), preserving marginal frequencies
+        while destroying sequential order.  The gap between real and shuffled
+        results isolates compression and complexity gains attributable to
+        \emph{sequential} structure beyond Zipfian skew.
 \end{itemize}
-Binaries that are significantly more compressible than random sequences exhibit
-structural redundancy inconsistent with a high-entropy source.
+Binaries that are significantly more compressible than both baselines exhibit
+redundancy inconsistent with a high-entropy source.
 
 \subsection{Motif Discovery}
 
@@ -497,19 +498,19 @@ conditions: real binaries, a unigram-preserving shuffle, and a fully random
 (uniform-vocabulary) baseline.  Real binaries achieve a mean \zlib{} ratio of
 $0.223$ compared to $0.361$ for the unigram-shuffled sequences and $0.672$ for
 uniform-random sequences of the same length.  Decomposing the total compression
-advantage over random ($\Delta = 0.449$): the Zipfian frequency distribution
-alone (unigram skew) contributes $0.311$ ($69\%$), while sequential structure
-on top of the unigram distribution contributes the remaining $0.138$ ($31\%$).
-Under \lzma{} the pattern is consistent: real $0.185$ vs.\ shuffled $0.304$
-vs.\ random $0.560$.  LZ78 normalised complexity ($\tilde{c} = K/\log_2 N$) has a median of $630$
-phrases-per-log-bit for real binaries vs.\ $45{,}187$ for unigram-shuffled
-sequences and $87{,}881$ for random sequences.
-The large random-baseline magnitude ($\tilde{c}\!=\!87{,}881$) reflects
-near-maximum-entropy behaviour; real instruction streams ($\tilde{c}\!=\!630$)
-are roughly $140\times$ below that value and the unigram-shuffled baseline
-($\tilde{c}\!=\!45{,}187$) sits between, confirming strong redundancy beyond
-unigram skew.  All $\tilde{c}$ values are relative to the random baseline;
-the key result is the ordering Real $\ll$ Shuffled $\ll$ Random.
+advantage over random ($\Delta = 0.449$), the unigram frequency skew accounts
+for $0.311$ ($69\%$) while sequential order beyond the unigram distribution
+accounts for $0.138$ ($31\%$).  Under \lzma{} the same ordering holds: real
+$0.185$ vs.\ shuffled $0.304$ vs.\ random $0.560$.
+
+LZ78 normalised complexity $\tilde{c} = K/\log_2 N$ exhibits the same trend:
+the median is $630$ for real binaries versus $45{,}187$ for unigram-shuffled
+sequences and $87{,}881$ for random sequences.  Because $K=\Theta(N/\log N)$
+for high-entropy sources, $\tilde{c}$ grows on the order of $N/\log^2 N$ and
+can therefore be large at the million-token scale; the key result is the
+\emph{relative} separation.  Real instruction streams lie orders of magnitude
+below both baselines, indicating substantial redundancy beyond what is implied
+by unigram skew alone.
 
 \begin{table}[h]
 \centering
