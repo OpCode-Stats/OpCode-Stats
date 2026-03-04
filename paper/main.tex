@@ -49,35 +49,15 @@
 \begin{abstract}
 \noindent
 Compiled binary executables, when viewed as flat sequences of machine opcodes,
-exhibit rich statistical structure that shares several properties observed
-in natural language and biological sequences.  We present \emph{Binary DNA}
+exhibit rich statistical structure that shares properties observed in natural
+language and biological sequences.  We present \emph{Binary DNA}
 (\url{https://github.com/aaslyan/sec}), an open-source toolkit that applies
 computational biology and information-theoretic techniques to the systematic
-study of program instruction sequences.
-
-Across a corpus of 15 system utilities totalling 3.1~million instructions, we
-find that opcode frequencies exhibit a highly concentrated, heavy-tailed
-distribution (MLE exponent $\hat{\alpha}_{\text{MLE}}\!\approx\!1.4$, closer to
-English text's $\alpha\!\approx\!1.0$; OLS log-log exponent
-$\hat{\alpha}_{\text{OLS}}\!\approx\!3.4$, inflated by long-tail weighting
-bias; KS $=0.114$, indicating approximately but not strictly a power law).
-N-gram entropy rates decrease by 1.82~bits/opcode from $n\!=\!1$ to $n\!=\!5$,
-and the gap between real and unigram-shuffled baselines confirms genuine
-higher-order sequential dependencies.  Binaries compress to roughly $22\%$ of
-their raw token volume under \zlib{} compared to $36\%$ for unigram-shuffled
-sequences and $67\%$ for random sequences; the
-unigram--sequential decomposition attributes $69\%$ of the compression gain to
-frequency skew and $31\%$ to sequential structure.  Motif discovery at lengths
-$k\!=\!4$--$12$ recovers 798 recurring patterns dominated by compiler-generated
-idioms.  PCA on per-binary bigram frequency vectors reveals that the corpus
-manifold occupies only 4\% of the theoretical bigram space
-($d_{95}\!=\!8$ out of 200); Levina--Bickel MLE corroborates this at
-$\hat{d}\!=\!8.0$.  A bigram language model achieves perplexity $8.5$---a
-$34\times$ reduction below vocabulary size---with a smoothing gap of only
-$0.07$~bits from the empirical conditional entropy lower bound.
-Scaling to 39 binaries (4.65~million instructions) confirms that all
-opcode-level statistics are stable across corpus size while $d_{95}$ grows
-modestly to 14, reflecting greater categorical diversity.
+study of program instruction sequences.  Across two corpora totalling up to
+4.65~million instructions, we characterise opcode frequency distributions,
+n-gram entropy rates, compressibility, recurring motifs, and manifold
+dimensionality, and validate that the measured statistics are stable as corpus
+size grows.  The toolkit and all experimental data are publicly available.
 \end{abstract}
 
 % ─────────────────────────────────────────────────────────────────────────────
