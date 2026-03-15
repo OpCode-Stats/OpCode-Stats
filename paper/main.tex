@@ -1,4 +1,4 @@
-% Binary DNA: A Statistical Analysis of Compiled Program Instruction Sequences
+% OpCode-Stats: A Statistical Analysis of Compiled Program Instruction Sequences
 % Compile with: pdflatex main.tex  (twice for cross-references)
 
 \documentclass[10pt,twocolumn]{article}
@@ -22,7 +22,7 @@
 
 % ── Typography ────────────────────────────────────────────────────────────────
 \hypersetup{colorlinks=true, linkcolor=blue!60!black, citecolor=green!40!black,
-            urlcolor=blue!70!black, pdfauthor={}, pdftitle={Binary DNA}}
+            urlcolor=blue!70!black, pdfauthor={}, pdftitle={OpCode-Stats}}
 
 % ── Macros ───────────────────────────────────────────────────────────────────
 \newcommand{\hn}{H_n}           % n-gram entropy
@@ -34,7 +34,7 @@
 % ─────────────────────────────────────────────────────────────────────────────
 \begin{document}
 
-\title{\textbf{Binary DNA: A Statistical Analysis of Compiled Program Instruction Sequences}}
+\title{\textbf{OpCode-Stats: A Statistical Analysis of Compiled Program Instruction Sequences}}
 
 \author{%
   Anonymous Author(s)\\
@@ -50,7 +50,7 @@
 \noindent
 Compiled binary executables, when viewed as flat sequences of machine opcodes,
 exhibit rich statistical structure that shares properties observed in natural
-language and biological sequences.  We present \emph{Binary DNA}\footnote{\url{https://github.com/OpCode-Stats/OpCode-Stats}}, an open-source toolkit that applies
+language and biological sequences.  We present \emph{OpCode-Stats}\footnote{\url{https://github.com/OpCode-Stats/OpCode-Stats}}, an open-source toolkit (inspired by computational biology techniques applied to DNA sequences, hence the name \emph{Binary DNA}) that applies
 computational biology and information-theoretic techniques to the systematic
 study of program instruction sequences.  Across two corpora totalling up to
 4.65~million instructions, we characterise opcode frequency distributions,
@@ -79,7 +79,7 @@ sequences}---are amenable to the same treatment.
 
 \paragraph{Contributions.}  This paper makes the following contributions:
 \begin{enumerate}
-  \item A reproducible, open-source analysis toolkit (\emph{Binary DNA},
+  \item A reproducible, open-source analysis toolkit (\emph{OpCode-Stats},
         \url{https://github.com/OpCode-Stats/OpCode-Stats}) that applies computational
         biology techniques to compiled binaries.
   \item Empirical characterisation of opcode frequency concentration: a heavy-
@@ -143,11 +143,11 @@ statistical structure in assembly but do not provide direct characterisation.
 PalmTree~\cite{li2021palmtree} learns BERT-style instruction embeddings from
 assembly corpora; jTrans~\cite{wang2022jtrans} extends this with jump-aware
 Transformers for binary similarity detection.  Both implicitly rely on the
-statistical regularities that Binary DNA makes explicit and measurable.
+statistical regularities that OpCode-Stats makes explicit and measurable.
 Marcelli et al.~\cite{marcelli2022machine} provide the most comprehensive
 systematisation of binary function similarity, evaluating approaches across
 243K binaries and 26.8M functions; their benchmark is the natural target for
-future large-scale validation of Binary DNA's similarity modules.
+future large-scale validation of OpCode-Stats's similarity modules.
 HermesSim~\cite{hermessim2024} argues that graph-based semantic
 representations outperform NLP-style n-gram approaches for binary
 \emph{similarity search}; this is orthogonal to our focus on
@@ -1123,7 +1123,7 @@ works on small corpora but may require tuning (e.g.\ IDF weighting, larger
 \section{Conclusions and Future Work}
 \label{sec:conclusion}
 
-We have presented \emph{Binary DNA}, an open-source toolkit for statistical
+We have presented \emph{OpCode-Stats}, an open-source toolkit for statistical
 analysis of compiled instruction sequences through the lens of computational
 biology.  As a worked example on a 15-binary smoke corpus of GNU/Linux ELF
 x86-64 utilities spanning 3.12 million instructions, the toolkit shows that
