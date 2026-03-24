@@ -164,13 +164,14 @@ def fit_zipf_mle(rank_frequency: List[Tuple[str, int, int, float]],
     probs /= probs.sum()
     ks_stat = float(np.max(np.abs(np.cumsum(probs) - np.cumsum(freqs / N))))
 
-    # --- 95% CI via parametric bootstrap (resample V ranks with replacement,
+    # --- 95% CI via parametric bootstrap (resample N observations with replacement,
     #     weighted by fitted probs; refit α on each sample) ---
     rng = np.random.default_rng(rng_seed)
     boot_alphas: list = []
+    N_int = int(N)
     for _ in range(n_bootstrap):
-        # Draw V rank-observations (each with weight = freq[r]/N) and recount
-        sampled_ranks = rng.choice(ranks.astype(int), size=V, replace=True, p=probs)
+        # Draw N rank-observations (the actual corpus size) and recount
+        sampled_ranks = rng.choice(ranks.astype(int), size=N_int, replace=True, p=probs)
         b_freqs = np.bincount(sampled_ranks, minlength=int(ranks.max()) + 1
                               ).astype(float)[1:]
         b_freqs = b_freqs[:V]

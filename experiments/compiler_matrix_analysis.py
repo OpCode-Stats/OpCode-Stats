@@ -77,7 +77,11 @@ def _compression_ratio(b: Binary, vocab: Dict) -> float:
     encoded = encode_sequence(b.full_opcode_sequence, vocab)
     if not encoded:
         return 1.0
-    data = bytes(e % 256 for e in encoded)
+    if max(encoded) < 256:
+        data = bytes(encoded)
+    else:
+        import struct
+        data = struct.pack(f'<{len(encoded)}H', *encoded)
     return len(zlib.compress(data)) / max(len(data), 1)
 
 
@@ -204,28 +208,70 @@ def analyze_project_vs_compiler(binaries: List[Binary]) -> Dict:
             "mean_b": float(np.mean(b)),
             "U": float(stat),
             "p_value": float(pval),
+            "p_value_note": "Mann-Whitney treats pairwise distances as independent; see perm_p_value",
             "effect_r": r,
             "significant": bool(pval < 0.05),
         }
+
+    def perm_test(group_a, group_b, n_perm=10000):
+        """Label-permutation test accounting for non-independence of pairwise distances."""
+        if len(group_a) < 2 or len(group_b) < 2:
+            return None
+        observed = float(np.mean(group_b) - np.mean(group_a))
+        rng = np.random.default_rng(42)
+        categories = np.array([b.category for b in binaries])
+        compilers = np.array([b.compiler for b in binaries])
+        count_ge = 0
+        for _ in range(n_perm):
+            perm_cat = rng.permutation(categories)
+            perm_cc = rng.permutation(compilers)
+            pa, pb = [], []
+            for i in range(n):
+                for j in range(i + 1, n):
+                    d = float(ncd_matrix[i, j])
+                    same_proj = perm_cat[i] == perm_cat[j]
+                    same_cc = perm_cc[i] == perm_cc[j]
+                    if same_proj and not same_cc:
+                        pa.append(d)
+                    elif not same_proj and not same_cc:
+                        pb.append(d)
+            if pa and pb:
+                if (np.mean(pb) - np.mean(pa)) >= observed:
+                    count_ge += 1
+        return float((count_ge + 1) / (n_perm + 1))
 
     test_project  = mw(within_project,  between, "project < between")
     test_compiler = mw(within_compiler, between, "compiler < between")
     # Is within-project significantly closer than within-compiler?
     test_proj_vs_cc = mw(within_project, within_compiler, "project < compiler")
 
+    # Permutation p-values (accounts for non-independence)
+    perm_p_project = perm_test(within_project, between)
+    perm_p_compiler = perm_test(within_compiler, between)
+    if perm_p_project is not None:
+        test_project["perm_p_value"] = perm_p_project
+        test_project["significant"] = bool(perm_p_project < 0.05)
+    if perm_p_compiler is not None:
+        test_compiler["perm_p_value"] = perm_p_compiler
+        test_compiler["significant"] = bool(perm_p_compiler < 0.05)
+
     # NCD matrix with rows/cols sorted for readability
     sorted_names  = sorted(b.name for b in binaries)
     name_to_idx   = {b.name: i for i, b in enumerate(binaries)}
 
-    interpretation = (
-        "Project dominates"   if (test_project.get("significant") and
-                                  test_project.get("mean_a", 1) <
-                                  test_compiler.get("mean_a", 0))
-        else "Compiler dominates" if (test_compiler.get("significant") and
-                                      test_compiler.get("mean_a", 1) <
-                                      test_project.get("mean_a", 0))
-        else "Mixed / inconclusive"
-    )
+    proj_sig = test_project.get("significant")
+    cc_sig = test_compiler.get("significant")
+    pvcc_sig = test_proj_vs_cc.get("significant")
+    if proj_sig and cc_sig and not pvcc_sig:
+        interpretation = "Both axes significant; no clear dominance between project and compiler"
+    elif proj_sig and cc_sig and pvcc_sig:
+        interpretation = "Both axes significant; project marginally tighter than compiler"
+    elif proj_sig and not cc_sig:
+        interpretation = "Project dominates"
+    elif cc_sig and not proj_sig:
+        interpretation = "Compiler dominates"
+    else:
+        interpretation = "Mixed / inconclusive"
 
     logger.info(
         f"[project-vs-compiler] "

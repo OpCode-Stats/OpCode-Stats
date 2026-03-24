@@ -231,7 +231,8 @@ class HierarchicalClusterer:
 
 def run_hierarchical_clustering(distance_matrices: Dict, binary_names: List[str],
                                output_dir: Path,
-                               categories: Optional[Dict[str, str]] = None) -> Dict:
+                               categories: Optional[Dict[str, str]] = None,
+                               euclidean_matrices: Optional[set] = None) -> Dict:
     """
     Run hierarchical clustering on multiple distance matrices.
 
@@ -240,7 +241,14 @@ def run_hierarchical_clustering(distance_matrices: Dict, binary_names: List[str]
         binary_names: Names of binaries corresponding to matrix rows/columns
         output_dir: Output directory for results and plots
         categories: Optional name→category mapping for purity computation
+        euclidean_matrices: Set of matrix names known to be Euclidean.
+            Ward linkage is only used for these; for non-Euclidean matrices
+            (e.g. NCD, cosine-derived) Ward is skipped because it assumes
+            Euclidean geometry and can distort dendrogram structure.
     """
+    if euclidean_matrices is None:
+        euclidean_matrices = set()
+
     logger.info("Running hierarchical clustering analysis...")
 
     results = {}
@@ -252,8 +260,13 @@ def run_hierarchical_clustering(distance_matrices: Dict, binary_names: List[str]
         logger.info(f"Clustering with {matrix_name} distance matrix...")
 
         try:
-            # Try different linkage methods
-            linkage_methods = ['ward', 'complete', 'average']
+            # Ward requires Euclidean geometry; skip it for non-Euclidean matrices
+            if matrix_name in euclidean_matrices:
+                linkage_methods = ['ward', 'complete', 'average']
+            else:
+                linkage_methods = ['complete', 'average']
+                logger.info(f"Skipping Ward linkage for '{matrix_name}' "
+                            f"(non-Euclidean distance matrix)")
             method_results = {}
 
             for method in linkage_methods:

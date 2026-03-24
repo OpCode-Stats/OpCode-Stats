@@ -27,22 +27,32 @@ class ClonePair:
     cross_binary: bool
 
 
+MIN_ALIGNMENT_SCORE = 0.30  # pairs below this are rejected regardless of Jaccard
+
+
 def classify_clone_type(jaccard: float, alignment_score: float) -> int:
     """
     Classify a clone pair by type.
 
     Primary rule: Jaccard thresholds (Type 1 ≥ 0.95, Type 2 ≥ 0.70, Type 3 ≥ 0.50).
+    Confirmation gate: pairs with alignment_score < MIN_ALIGNMENT_SCORE are
+    rejected (return 0), ensuring Smith-Waterman acts as a genuine filter.
     Refinement: downgrade by one level if |jaccard - alignment_score| > 0.3,
     suggesting structural divergence despite high set similarity.
     """
+    if jaccard < THRESHOLDS[3]:
+        return 0  # not a clone
+
+    # Smith-Waterman confirmation gate: reject if alignment score too low
+    if alignment_score < MIN_ALIGNMENT_SCORE:
+        return 0
+
     if jaccard >= THRESHOLDS[1]:
         t = 1
     elif jaccard >= THRESHOLDS[2]:
         t = 2
-    elif jaccard >= THRESHOLDS[3]:
-        t = 3
     else:
-        return 0  # not a clone
+        t = 3
 
     # Downgrade if the two metrics disagree strongly
     if abs(jaccard - alignment_score) > 0.3:

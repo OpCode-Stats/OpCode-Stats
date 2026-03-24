@@ -132,30 +132,38 @@ def analyze_ngrams_for_n(binaries: List[Binary], n: int) -> Dict:
     }
 
 def compute_entropy_rate(binaries: List[Binary], max_n: int = 5) -> List[Dict]:
-    """Compute entropy rate for n-grams up to max_n."""
+    """Compute entropy rate for n-grams up to max_n.
+
+    Returns per-n dictionaries with:
+      - entropy_rate: H_n / n  (the standard entropy rate)
+      - conditional_entropy: H_n - H_{n-1}  (new information from the n-th token)
+    """
     logger.info(f"Computing entropy rates for n=1 to {max_n}")
-    
+
     entropy_data = []
     previous_entropy = 0.0
-    
+
     for n in range(1, max_n + 1):
         ngram_analysis = analyze_ngrams_for_n(binaries, n)
         current_entropy = ngram_analysis["entropy"]
-        
-        # Entropy rate is the difference between consecutive entropies
-        entropy_rate = current_entropy - previous_entropy if n > 1 else current_entropy
-        
+
+        # Conditional entropy: H_n - H_{n-1}
+        conditional_entropy = current_entropy - previous_entropy if n > 1 else current_entropy
+        # Entropy rate: H_n / n
+        entropy_rate = current_entropy / n
+
         entropy_data.append({
             "n": n,
             "entropy": current_entropy,
             "entropy_rate": entropy_rate,
+            "conditional_entropy": conditional_entropy,
             "unique_ngrams": ngram_analysis["unique_ngrams"],
             "max_entropy": ngram_analysis["max_entropy"],
             "normalized_entropy": ngram_analysis["normalized_entropy"]
         })
-        
+
         previous_entropy = current_entropy
-    
+
     return entropy_data
 
 def compute_shuffled_entropy_rates(binaries: List[Binary], max_n: int = 5,

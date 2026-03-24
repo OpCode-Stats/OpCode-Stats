@@ -54,7 +54,7 @@ exhibit rich statistical structure that shares properties observed in natural
 language and biological sequences.  We present \emph{OpCode-Stats}\footnote{\url{https://github.com/OpCode-Stats/OpCode-Stats}}, an open-source toolkit (inspired by computational biology techniques applied to DNA sequences) that applies
 computational biology and information-theoretic techniques to the systematic
 study of program instruction sequences.  Across two corpora totalling up to
-4.65~million instructions, we characterise opcode frequency distributions,
+3.74~million instructions, we characterise opcode frequency distributions,
 n-gram entropy rates, compressibility, recurring motifs, and manifold
 dimensionality, and validate that the measured statistics are stable as corpus
 size grows.  The toolkit and all experimental data are publicly available.
@@ -85,7 +85,7 @@ sequences}---are amenable to the same treatment.
         biology techniques to compiled binaries.
   \item Empirical characterisation of opcode frequency concentration: a heavy-
         tailed rank-frequency distribution (MLE $\hat{\alpha}\!\approx\!1.4$;
-        KS $= 0.114$) with a unigram--sequential decomposition of compression
+        KS $= 0.117$) with a unigram--sequential decomposition of compression
         gains showing that $69\%$ of compressibility advantage over random
         sequences comes from frequency skew and $31\%$ from sequential
         structure.
@@ -98,10 +98,11 @@ sequences}---are amenable to the same treatment.
         mutual information decay, and corpus-level PCA.
   \item A controlled compiler matrix experiment ($5$ projects $\times$
         $\{\text{gcc},\text{clang}\} \times \{$\texttt{-O0,-O2,-O3}$\}$) showing
-        that source-code identity explains more NCD similarity than compiler
-        identity ($p_{\text{project}} < 10^{-4}$, $r=0.51$) and that compiler
-        variation adds new manifold dimensions ($d_{95}$ doubles from 8 to 17
-        when compiler axis is included).
+        that both source-code identity and compiler identity are comparably
+        strong determinants of binary similarity (both $p < 10^{-4}$,
+        $r \approx 0.5$; project vs.\ compiler not significantly different,
+        $p = 0.38$) and that compiler variation adds new manifold dimensions
+        ($d_{95}$ doubles from 8 to 17 when compiler axis is included).
   \item Empirical validation that $n$-gram language model perplexity closely
         tracks the empirical conditional entropy (bigram gap $< 0.07$ bits),
         closing the loop between statistical structure and model performance.
@@ -195,7 +196,7 @@ We analyse two corpora of GNU/Linux ELF x86-64 binaries drawn from
   \item \emph{Smoke} (15 binaries): grep, sed, gzip, bzip2, xz, find, tar,
         bash, python3, curl, git, vim, nano, gcc, objdump.  Verified to have
         distinct inodes, eliminating hard-link duplicates.
-  \item \emph{Coreutils-system} (39 binaries after inode deduplication):
+  \item \emph{Coreutils-system} (40 binaries after inode deduplication):
         drawn from 11 functional categories (text processing, compression,
         filesystem, networking, shells, editors, compilers, interpreters,
         version control, archives, utilities) with a $10\,\text{MB}$ size cap.
@@ -319,8 +320,10 @@ We compute two families of pairwise binary similarity matrices:
 To quantify whether the NCD distance matrices capture category structure, we
 apply a one-sided Mann--Whitney U test comparing within-category to
 between-category pairwise distances (binaries with no category label excluded).
-Agglomerative hierarchical clustering (Ward, complete, and average linkage) is
+Agglomerative hierarchical clustering (complete and average linkage) is
 applied to each distance matrix and evaluated by cophenetic correlation.
+Ward linkage is omitted because it assumes Euclidean geometry, which NCD
+and cosine-derived distance matrices do not satisfy.
 Two-dimensional embeddings are produced via PCA and UMAP.  Cluster
 quality is measured by \emph{silhouette score} and \emph{category purity}:
 the fraction of cluster members sharing the majority category, averaged over
@@ -397,13 +400,16 @@ opcode sequences.  The normalised alignment score
 $s = S / \min(|f_1|, |f_2|)$ provides a more accurate similarity estimate
 than raw Jaccard.  Pairs are classified by clone type:
 \begin{itemize}
-  \item \textbf{Type 1} (exact/near-exact): $J \geq 0.95$---opcode sequences
-        are identical up to trivial register renaming captured by the
-        shingle vocabulary.
-  \item \textbf{Type 2} (renamed/parameterised): $0.70 \leq J < 0.95$---same
-        structure with different immediate constants or calling conventions.
+  \item \textbf{Type 1} (exact/near-exact): $J \geq 0.95$---mnemonic
+        sequences are identical or differ in at most a few opcodes.
+        Because operands are discarded, this level captures
+        functions whose instruction mix is essentially the same.
+  \item \textbf{Type 2} (high overlap): $0.70 \leq J < 0.95$---mnemonic
+        shingle sets share the same overall structure but differ in a
+        moderate fraction of instruction patterns.
   \item \textbf{Type 3} (gapped/structurally similar): $0.50 \leq J < 0.70$---shared
-        algorithmic skeleton with insertions or deletions.
+        algorithmic skeleton at the mnemonic level with insertions or
+        deletions.
 \end{itemize}
 
 Clone pairs are assembled into \emph{families} via connected components on
@@ -420,7 +426,7 @@ flag indicating whether members span more than one input binary.
 
 Table~\ref{tab:corpus} summarises both corpora after inode deduplication.
 The smoke corpus is a 15-binary pilot; the coreutils-system corpus
-scales to 39 binaries spanning 11 functional categories.
+scales to 40 binaries spanning 11 functional categories.
 Section~\ref{sec:scaling} reports a direct comparison of all key metrics
 across the two corpora, demonstrating measurement stability.
 
@@ -433,15 +439,15 @@ across the two corpora, demonstrating measurement stability.
 \toprule
 \textbf{Corpus} & \textbf{Bins} & \textbf{Cats} & \textbf{Vocab} & \textbf{Instr.\ (M)} \\
 \midrule
-Smoke            & 15  & 8   & 293 & 3.12 \\
-Coreutils-sys    & 39  & 11  & 320 & 4.65 \\
+Smoke            & 15  & 8   & 281 & 2.91 \\
+Coreutils-sys    & 40  & 11  & 301 & 3.74 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsection{Opcode Vocabulary and Frequency Distribution}
 
-The shared vocabulary across the smoke corpus contains $|\mathcal{V}| = 293$
+The shared vocabulary across the smoke corpus contains $|\mathcal{V}| = 281$
 distinct opcodes.  The top-5 opcodes by corpus-wide frequency are
 \texttt{mov}, \texttt{lea}, \texttt{call}, \texttt{jmp}, and \texttt{push},
 collectively accounting for over $50\%$ of all instructions---a concentration
@@ -449,18 +455,18 @@ consistent with prior work on x86-64 binaries~\cite{bilar2007opcodes}.
 
 \paragraph{Zipf's law.}
 Figure~\ref{fig:zipf} shows the rank-frequency distribution on log-log axes.
-The OLS fit on log-log coordinates yields $\hat{\alpha}_{\text{OLS}} = 3.356$
-(95\% CI: $[3.086,\, 3.666]$, $R^2 = 0.92$) from 200 bootstrap resamples.
+The OLS fit on log-log coordinates yields $\hat{\alpha}_{\text{OLS}} = 3.338$
+(95\% CI: $[3.052,\, 3.666]$, $R^2 = 0.92$) from 200 bootstrap resamples.
 As a statistically principled complement, the MLE of the truncated discrete
-Zipf model yields $\hat{\alpha}_{\text{MLE}} = 1.444$
-(95\% CI: $[1.370,\, 1.515]$, KS $= 0.114$).
+Zipf model yields $\hat{\alpha}_{\text{MLE}} = 1.439$
+(95\% CI: $[1.438,\, 1.440]$, KS $= 0.117$).
 The two estimates diverge because OLS on log-log axes weights low-frequency
 (high-rank) opcodes heavily: the many near-zero-frequency opcodes in the long
 tail pull the fitted slope upward, overestimating the power-law exponent.
 MLE, which properly weights by observation count, yields an exponent
 substantially closer to the $\alpha \approx 1.0$ of natural language.
-The KS statistic of $0.114$ exceeds the asymptotic critical value for
-$n=293$ opcodes ($0.079$ at $\alpha=0.05$), indicating that a strict
+The KS statistic of $0.117$ exceeds the asymptotic critical value for
+$n=281$ opcodes ($0.081$ at $\alpha=0.05$), indicating that a strict
 truncated power law is rejected; the distribution is better characterised as
 heavy-tailed with approximately Zipfian concentration.
 Regardless of the precise distributional form, the empirical finding is
@@ -478,10 +484,10 @@ instructions, while the long tail of rarely-used opcodes drops off steeply.
 
 \subsection{N-gram Entropy Rates}
 
-Figure~\ref{fig:entropy} plots $h_r(n)$ for $n = 1,\ldots,5$ alongside the
+Figure~\ref{fig:entropy} plots $h_r(n) = H_n / n$ for $n = 1,\ldots,5$ alongside the
 shuffled baseline.  The entropy rate of real sequences decreases by
-$1.82$ bits from $n=1$ ($h_r(1) = 3.99$ bits) to $n=5$ ($h_r(5) = 2.16$ bits),
-whereas the shuffled baseline decreases by only $1.09$ bits,
+$1.12$ bits from $n=1$ ($h_r(1) = 3.98$ bits) to $n=5$ ($h_r(5) = 2.86$ bits),
+whereas the shuffled baseline decreases by only $0.30$ bits,
 reflecting near-independence after shuffling.  The
 entropy gain $\Delta h_r(n) < 0$ for all $n > 1$ confirms that real opcode
 sequences carry genuine multi-instruction dependencies not accounted for by the
@@ -506,12 +512,12 @@ predictable local instruction streams than data-transform pipelines.
 Table~\ref{tab:compression} summarises compression ratios across three
 conditions: real binaries, a unigram-preserving shuffle, and a fully random
 (uniform-vocabulary) baseline.  Real binaries achieve a mean \zlib{} ratio of
-$0.223$ compared to $0.361$ for the unigram-shuffled sequences and $0.672$ for
+$0.221$ compared to $0.360$ for the unigram-shuffled sequences and $0.666$ for
 uniform-random sequences of the same length.  Decomposing the total compression
-advantage over random ($\Delta = 0.449$), the unigram frequency skew accounts
-for $0.311$ ($69\%$) while sequential order beyond the unigram distribution
-accounts for $0.138$ ($31\%$).  Under \lzma{} the same ordering holds: real
-$0.185$ vs.\ shuffled $0.304$ vs.\ random $0.560$.
+advantage over random ($\Delta = 0.445$), the unigram frequency skew accounts
+for $0.306$ ($69\%$) while sequential order beyond the unigram distribution
+accounts for $0.139$ ($31\%$).  Under \lzma{} the same ordering holds: real
+$0.184$ vs.\ shuffled $0.303$ vs.\ random $0.553$.
 
 LZ78 normalised complexity $\tilde{c} = K/\log_2 N$ exhibits the same trend:
 the median is $630$ for real binaries versus $45{,}187$ for unigram-shuffled
@@ -531,8 +537,8 @@ by unigram skew alone.
 \toprule
 & \textbf{Real} & \textbf{Shuffled} & \textbf{Random} \\
 \midrule
-\zlib{}       & $0.223$      & $0.361$      & $0.672$ \\
-\lzma{}       & $0.185$      & $0.304$      & $0.560$ \\
+\zlib{}       & $0.221$      & $0.360$      & $0.666$ \\
+\lzma{}       & $0.184$      & $0.303$      & $0.553$ \\
 LZ78 (norm.)  & $630$ (med.) & $45{,}187$   & $87{,}881$ \\
 \bottomrule
 \end{tabular}
@@ -614,18 +620,18 @@ epilogues are more varied).
 \subsection{Binary Similarity and Clustering}
 
 Figure~\ref{fig:ncd} shows the NCD distance matrix (\zlib{}) for the smoke
-corpus.  The corpus is heterogeneous: pairwise NCD values range from $0.963$ to
-$1.000$ under \zlib{} (mean $0.992$) and $0.883$ to $0.993$ under \lzma{}
+corpus.  The corpus is heterogeneous: pairwise NCD values range from $0.956$ to
+$1.000$ under \zlib{} (mean $0.991$) and $0.852$ to $0.993$ under \lzma{}
 (mean $0.967$).  We note that NCD values approaching $1.0$ are in the
 near-degenerate regime where compressor window limitations reduce sensitivity
 (Cebrián et al., 2005); \lzma{}'s larger block size yields more reliable
-separation ($0.883$--$0.993$) and should be preferred for large binaries.
+separation ($0.852$--$0.993$) and should be preferred for large binaries.
 Despite the high absolute distances under \zlib{}, category-consistent
 patterns still emerge:
 \begin{itemize}
-  \item Compression utilities (\texttt{bzip2}--\texttt{xz}: $0.963$,
-        \texttt{gzip}--\texttt{xz}: $0.965$) form the closest pairs in the corpus.
-  \item Text-processing tools (\texttt{grep}--\texttt{sed}: $0.976$) are more
+  \item Compression utilities (\texttt{bzip2}--\texttt{xz}: $0.956$,
+        \texttt{gzip}--\texttt{xz}: $0.963$) form the closest pairs in the corpus.
+  \item Text-processing tools (\texttt{grep}--\texttt{sed}: $0.969$) are more
         similar to each other than to cross-category pairs.
   \item The two editors (\texttt{vim}--\texttt{nano}) obtain NCD $= 1.00$ under
         \zlib{}, reflecting their very different sizes and codebases despite
@@ -636,12 +642,12 @@ patterns still emerge:
   \centering
   \includegraphics[width=\columnwidth]{plots/ncd_heatmap_zlib.png}
   \caption{NCD distance matrix (\zlib{}) for the smoke corpus.
-           Binaries are ordered by hierarchical clustering (Ward linkage).
+           Binaries are ordered by hierarchical clustering (average linkage).
            Same-category pairs appear as local minima on the off-diagonal.}
   \label{fig:ncd}
 \end{figure}
 
-Hierarchical clustering (Ward linkage) with a distance threshold of $0.5$
+Hierarchical clustering (average linkage) with a distance threshold of $0.5$
 produces 15 singleton clusters since all pairwise NCD values exceed $0.9$---the
 corpus is too heterogeneous for compression-based hard partitioning at this
 threshold.  This does not imply NCD is uninformative: NCD is useful as a
@@ -664,10 +670,10 @@ Despite the high absolute NCD values, a one-sided Mann--Whitney U test
 confirms that within-category pairs are stochastically closer than
 between-category pairs under both compressors:
 \begin{itemize}
-  \item \zlib{}: mean within $= 0.976$, mean between $= 0.992$,
-        $U = 23.0$, $p = 0.014$, rank-biserial $r = 0.588$.
-  \item \lzma{}: mean within $= 0.935$, mean between $= 0.969$,
-        $U = 19.0$, $p = 0.006$, rank-biserial $r = 0.665$.
+  \item \zlib{}: mean within $= 0.972$, mean between $= 0.992$,
+        $U = 86.0$, $p = 0.013$ (MW), permutation $p < 0.001$, rank-biserial $r = 0.600$.
+  \item \lzma{}: mean within $= 0.924$, mean between $= 0.969$,
+        $U = 65.0$, $p = 0.005$ (MW), permutation $p = 0.003$, rank-biserial $r = 0.698$.
 \end{itemize}
 The effect size ($r \approx 0.6$--$0.7$) indicates substantial separation:
 category membership
@@ -675,6 +681,11 @@ is a meaningful predictor of NCD distance even when absolute distances are
 near the theoretical maximum.  The lzma compressor yields both a larger
 within/between gap and a stronger effect size, consistent with its superior
 modelling of long-range repetition across the opcode stream.
+Because pairwise distances sharing a binary are not independent, the
+Mann--Whitney p-values are anti-conservative.  We therefore supplement them
+with a label-permutation test (10\,000 permutations of category labels,
+re-partitioning within/between groups each iteration); the permutation
+p-values confirm significance under both compressors.
 
 \paragraph{N-gram cosine similarity.}
 With the corrected L1-normalised TF vectoriser, the bigram ($n=2$) vocabulary
@@ -743,7 +754,7 @@ all possible opcode sequences.
 \toprule
 $n$ & \textbf{Unique} & \textbf{Theoretical max} & \textbf{Coverage} \\
 \midrule
-1 & 293       & 293             & 100\%       \\
+1 & 281       & 281             & 100\%       \\
 2 & 5,757     & 85,849          & 6.71\%      \\
 3 & 38,073    & 25,153,757      & 0.15\%      \\
 4 & 137,534   & $7.4\times10^9$ & $1.9\times10^{-3}$\% \\
@@ -795,7 +806,7 @@ Trigram & 2.79 &  6.9 & 2.72 & $+0.07$ \\
 \end{table}
 
 The unigram LM achieves $\mathrm{PPL}(1) = 19.6$ despite a vocabulary of
-$|\mathcal{V}| = 293$ opcodes---a $15\times$ reduction in effective vocabulary
+$|\mathcal{V}| = 281$ opcodes---a $15\times$ reduction in effective vocabulary
 reflecting the extreme Zipf concentration ($\alpha \approx 3.4$).  The bigram
 LM reduces perplexity to $8.5$ with a smoothing gap of only
 $\delta(2) = 0.07$~bits, within $2\%$ of the empirical conditional-entropy
@@ -805,8 +816,8 @@ an equally tight gap ($\delta(3) = 0.07$~bits).
 For $n \geq 4$ the smoothing gap grows substantially ($\delta(4) = 0.38$,
 $\delta(5) = 0.97$~bits) as the Laplace overhead dominates in the sparse
 high-order context space: with 15 training binaries the 4-gram and 5-gram
-counts are spread over ${\sim}293^4 \approx 7\times10^9$ and
-${\sim}293^5 \approx 2\times10^{12}$ possible contexts respectively.  A
+counts are spread over ${\sim}281^4 \approx 6\times10^9$ and
+${\sim}281^5 \approx 2\times10^{12}$ possible contexts respectively.  A
 back-off or Kneser-Ney smoothed model would close much of this gap.
 
 The tight match at $n = 2, 3$ directly validates the information-theoretic
@@ -886,7 +897,10 @@ for all ${30 \choose 2} = 435$ pairs and partition them into three groups:
 and \emph{between} ($n=300$).  One-sided Mann--Whitney U tests (Table~\ref{tab:proj_vs_cc})
 show that both groupings are significantly closer than the between group, but
 within-project is the tightest ($p < 10^{-4}$, $r = 0.51$) and is
-\emph{not} significantly different from within-compiler ($p = 0.35$).
+\emph{not} significantly different from within-compiler ($p = 0.38$).
+As with the smoke-corpus NCD test, pairwise distances are not independent;
+label-permutation p-values (10\,000 iterations) are also computed and
+confirm significance for both groupings.
 
 \begin{table}[h]
 \centering
@@ -898,61 +912,68 @@ within-project is the tightest ($p < 10^{-4}$, $r = 0.51$) and is
 \toprule
 \textbf{Pair type} & $n$ & \textbf{NCD} & $U$ & $p$ & $r$ \\
 \midrule
-Within-proj.  & 75  & $0.501$ & $18{,}162$ & $<0.0001$ & $0.506$ \\
-Within-comp.  & 60  & $0.544$ & $14{,}040$ & $<0.0001$ & $0.532$ \\
-Between       & 300 & $0.582$ & ---        & ---       & ---    \\
+Within-proj.  & 75  & $0.496$ & $5{,}537$ & $<0.0001$ & $0.508$ \\
+Within-comp.  & 60  & $0.539$ & $4{,}053$ & $<0.0001$ & $0.550$ \\
+Between       & 300 & $0.576$ & ---        & ---       & ---    \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The result supports a \textbf{project-first} interpretation: source-code
-identity (algorithm structure) explains more of the binary similarity than
-compiler identity.  Both effects are real and statistically strong; neither
-alone fully accounts for the variance, consistent with the d95 doubling
-observed above.
+Both within-project and within-compiler distances are significantly smaller
+than between-group distances, confirming that \emph{both axes} contribute to
+binary similarity.  However, within-project is not significantly tighter
+than within-compiler ($p = 0.38$), so the data do not support a clean
+project-first or compiler-first ranking.  The most defensible conclusion is
+that source-code identity and compiler identity are \emph{comparably strong}
+determinants of binary similarity---consistent with the $d_{95}$ doubling
+observed above, which shows that the compilation axis adds dimensions
+comparable in number to those spanned by the source programs alone.
 
 \subsection{Code Clone Detection}
 \label{sec:clone_results}
 
 Table~\ref{tab:clones} summarises the clone detection results on the 15-binary
-smoke corpus.  LSH candidate generation produced 475 unique candidate pairs;
-Smith-Waterman re-scoring confirmed 457 as genuine clone pairs ($96\%$
-confirmation rate).  These 457 pairs form 93 clone families; six families
+smoke corpus.  LSH candidate generation produced 556 unique candidate pairs.
+Each candidate then undergoes Smith-Waterman alignment; pairs whose
+normalised alignment score falls below $0.30$ are rejected outright,
+and surviving pairs are downgraded by one clone type when $|J - s| > 0.3$.
+After this filtering, 537 pairs remain as confirmed clones ($96.6\%$
+pass rate).  These 537 pairs form 117 clone families; four families
 span at least two distinct binaries (\emph{cross-binary families}).
 
 \begin{table}[h]
 \centering
 \caption{Clone detection summary for the 15-binary smoke corpus
-         (6,013 functions total).}
+         (6,025 functions total).}
 \label{tab:clones}
 \small
 \begin{tabular}{@{}lr@{}}
 \toprule
 \textbf{Metric} & \textbf{Value} \\
 \midrule
-Functions in any clone family         & 286 (4.8\%) \\
-Clone pairs confirmed                 & 457 \\
-\quad Type 1 (exact, $J \geq 0.95$)  & 308 (67\%) \\
-\quad Type 2 (renamed, $J \geq 0.70$)& 78  (17\%) \\
-\quad Type 3 (gapped, $J \geq 0.50$) & 71  (16\%) \\
-Clone families                        & 93 \\
-\quad Cross-binary                    & 6 \\
-Mean family size                      & 3.1 \\
-Largest family                        & 16 members \\
+Functions in any clone family         & 352 (5.8\%) \\
+Clone pairs confirmed                 & 537 \\
+\quad Type 1 (exact, $J \geq 0.95$)  & 342 (63.7\%) \\
+\quad Type 2 (high overlap, $J \geq 0.70$)& 127  (23.6\%) \\
+\quad Type 3 (gapped, $J \geq 0.50$) & 68  (12.7\%) \\
+Clone families                        & 117 \\
+\quad Cross-binary                    & 4 \\
+Mean family size                      & 3.0 \\
+Largest family                        & 14 members \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The dominant clone type is Type 1 ($67\%$ of pairs), confirming that most
+The dominant clone type is Type 1 ($63.7\%$ of pairs), confirming that most
 recurring patterns are truly identical opcode sequences rather than merely
 similar ones.  This is consistent with compiler-inserted boilerplate: ABI
 function prologues (\texttt{endbr64; push rbp; mov rbp,rsp; \ldots}),
 CRT initialisation stubs, and \texttt{\_\_libc\_start\_main} wrappers are
 inserted verbatim by the linker and appear unchanged across binaries.
 
-The six cross-binary families are particularly informative.  The largest
-cross-binary family (size 16) is present in all 15 binaries and consists
-entirely of the standard function prologue idiom.  The next largest
+The four cross-binary families are particularly informative.  The largest
+cross-binary family (size 14) spans multiple binaries and consists
+of the standard function prologue idiom.  The next largest
 cross-binary families correspond to error-reporting stubs and
 string-comparison loops shared between text-processing utilities (grep,
 sed, tar).
@@ -973,10 +994,10 @@ control flow is less prone to accidental near-duplication.
   \label{fig:clone_dist}
 \end{figure}
 
-These results reinforce the thin-manifold picture: the $4.8\%$ of functions
+These results reinforce the thin-manifold picture: the $5.8\%$ of functions
 that are cloned are not randomly distributed across sequence space---they are
-concentrated on a \emph{small number of clone archetypes} (93 families from
-457 pairs), further tiling the already-compact program manifold with repeated
+concentrated on a \emph{small number of clone archetypes} (117 families from
+537 pairs), further tiling the already-compact program manifold with repeated
 structure.
 
 % ─────────────────────────────────────────────────────────────────────────────
@@ -984,8 +1005,12 @@ structure.
 \label{sec:scaling}
 
 To assess whether the toolkit's measurements are stable across corpus scale,
-we apply the full pipeline to the 39-binary coreutils-system corpus and
+we apply the full pipeline to the 40-binary coreutils-system corpus and
 compare key metrics against the 15-binary smoke corpus.
+Because the coreutils-system corpus is a \emph{superset} of the smoke
+corpus (it adds 25 binaries to the original 15), this comparison tests
+nested-corpus robustness rather than independent replication; the shared
+core means the two samples are not statistically independent.
 Table~\ref{tab:scaling} summarises the comparison.
 
 \begin{table}[h]
@@ -997,18 +1022,18 @@ Table~\ref{tab:scaling} summarises the comparison.
 \small
 \begin{tabular}{@{}lcc@{}}
 \toprule
-\textbf{Metric} & \textbf{Smoke (15)} & \textbf{Coreutils (39)} \\
+\textbf{Metric} & \textbf{Smoke (15)} & \textbf{Coreutils (40)} \\
 \midrule
-Instructions (M)         & 3.12  & 4.65  \\
-Vocabulary $|\mathcal{V}|$   & 293   & 320   \\
-MLE $\hat{\alpha}$       & 1.444 & 1.447 \\
-KS goodness-of-fit       & 0.114 & 0.119 \\
-$h_r(1)$ (bits)          & 3.99  & 4.00  \\
-$h_r(5)$ (bits)          & 2.16  & 2.20  \\
-$\Delta h_r$ (1→5)       & 1.82  & 1.80  \\
-\zlib{} ratio (real)     & 0.223 & 0.224 \\
-\zlib{} ratio (shuffled) & 0.361 & 0.366 \\
-\zlib{} ratio (random)   & 0.672 & 0.682 \\
+Instructions (M)         & 2.91  & 3.74  \\
+Vocabulary $|\mathcal{V}|$   & 281   & 301   \\
+MLE $\hat{\alpha}$       & 1.439 & 1.441 \\
+KS goodness-of-fit       & 0.117 & 0.118 \\
+$h_r(1)$ (bits)          & 3.98  & 3.99  \\
+$h_r(5)$ (bits)          & 2.86  & 2.88  \\
+$\Delta h_r$ (1→5)       & 1.12  & 1.12  \\
+\zlib{} ratio (real)     & 0.221 & 0.237 \\
+\zlib{} ratio (shuffled) & 0.360 & 0.375 \\
+\zlib{} ratio (random)   & 0.666 & 0.676 \\
 Motifs discovered        & 798   & 780   \\
 PCA $d_{95}$ (bigram)    & 8/200 (4\%) & 14/200 (7\%) \\
 \bottomrule
@@ -1062,13 +1087,13 @@ curiosity.  If programmes inhabit a low-dimensional space, similarity measures
 defined in that space are more informative: two binaries that appear distant in
 a raw sequence metric may in fact be nearest neighbours on the manifold.  Our
 clustering results confirm that within-category pairs (e.g.\ compression
-utilities bzip2--xz with NCD $0.963$) are consistently closer than cross-category
+utilities bzip2--xz with NCD $0.956$) are consistently closer than cross-category
 pairs---suggesting that compression-based features are a viable foundation for
 binary classification, provenance, and clone detection without requiring
 disassembly beyond opcode extraction.  The clone detection results
 (Section~\ref{sec:clone_results}) directly confirm this: MinHash + LSH over
-opcode $k$-grams recovers 457 clone pairs with a $96\%$ confirmation rate,
-identifying six cross-binary families that correspond to known compiler
+opcode $k$-grams recovers 537 clone pairs with a $96.6\%$ confirmation rate,
+identifying four cross-binary families that correspond to known compiler
 prologue/libc stubs---without any symbol information or source code.
 
 \subsection{Implications for Language Model Performance on Code}
@@ -1078,7 +1103,7 @@ on source code to its statistical regularity.  Our results extend this
 explanation to the binary level.  An LLM trained on opcode sequences faces a
 much easier prediction problem than one trained on natural language:
 \begin{itemize}
-  \item The effective vocabulary size is $|\mathcal{V}| = 293$
+  \item The effective vocabulary size is $|\mathcal{V}| = 281$
         distinct mnemonics---smaller than a typical NLP vocabulary by two orders
         of magnitude.
   \item Transition probabilities are highly non-uniform (Zipf-like;
@@ -1093,9 +1118,9 @@ much easier prediction problem than one trained on natural language:
 We can now quantify this claim directly.  The $n$-gram LM experiments of
 Section~\ref{sec:lm_results} show that a Laplace-smoothed bigram model---one of
 the simplest possible language models---achieves perplexity $8.5$ on held-out
-opcode sequences versus a vocabulary of $293$.  This is a $34\times$ reduction
+opcode sequences versus a vocabulary of $281$.  This is a $34\times$ reduction
 in effective vocabulary; at each prediction step the model effectively chooses
-among $\sim\!9$ alternatives rather than $293$.  Crucially, this low perplexity
+among $\sim\!9$ alternatives rather than $281$.  Crucially, this low perplexity
 is not a model-specific artifact: it is a direct consequence of the empirical
 conditional entropy ($H_2 - H_1 = 3.02$~bits, expected PPL $\approx 8.1$),
 which is determined by the corpus structure alone.  The gap of only $0.07$~bits
@@ -1127,10 +1152,10 @@ works on small corpora but may require tuning (e.g.\ IDF weighting, larger
 We have presented \emph{OpCode-Stats}, an open-source toolkit for statistical
 analysis of compiled instruction sequences through the lens of computational
 biology.  As a worked example on a 15-binary smoke corpus of GNU/Linux ELF
-x86-64 utilities spanning 3.12 million instructions, the toolkit shows that
+x86-64 utilities spanning 2.91 million instructions, the toolkit shows that
 opcode frequencies are heavily concentrated (MLE $\hat{\alpha} \approx 1.4$;
-KS $=0.114$, indicating approximately but not strictly Zipfian), entropy rates decrease
-by $1.82$ bits from $n=1$ to $n=5$ (vs.\ $1.09$ bits for a shuffled baseline,
+KS $=0.117$, indicating approximately but not strictly Zipfian), entropy rates decrease
+by $1.12$ bits from $n=1$ to $n=5$ (vs.\ $0.30$ bits for a shuffled baseline,
 confirming genuine sequential dependencies), binaries compress to $22\%$ of raw
 token volume vs.\ $36\%$ for unigram-shuffled sequences and $67\%$ for random
 sequences ($69\%$ of the compression gain attributed to Zipfian frequency skew,
@@ -1142,8 +1167,8 @@ a Laplace-smoothed bigram language model achieves perplexity $8.5$---a
 $34\times$ reduction below the vocabulary size and within $0.07$~bits of the
 empirical conditional-entropy lower bound---directly quantifying how
 predictable instruction sequences are for a language model, and MinHash+LSH
-clone detection recovers 457 clone pairs forming 93 families ($4.8\%$ of
-functions) with a $96\%$ confirmation rate, revealing that the manifold is
+clone detection recovers 537 clone pairs forming 117 families ($5.8\%$ of
+functions) with a $96.6\%$ confirmation rate, revealing that the manifold is
 not merely compact but \emph{repetitively tiled} by a small set of
 compiler-inserted archetypes.
 

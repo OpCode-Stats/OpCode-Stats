@@ -188,16 +188,41 @@ def evaluate_category_separation(ncd_matrix: np.ndarray, binaries: List[Binary])
     # rank-biserial correlation (effect size): r = 1 - 2U / (n1*n2)
     r = float(1.0 - 2.0 * stat / (n1 * n2))
 
+    # --- Permutation test (accounts for non-independence of pairwise distances) ---
+    observed_diff = float(np.mean(between_dists) - np.mean(within_dists))
+    n_perm = 10000
+    rng = np.random.default_rng(42)
+    cat_arr = np.array(cats)
+    count_ge = 0
+    for _ in range(n_perm):
+        perm = rng.permutation(cat_arr)
+        w, b = [], []
+        for i in range(n):
+            for j in range(i + 1, n):
+                if perm[i] is None or perm[j] is None:
+                    continue
+                d = float(ncd_matrix[i, j])
+                if perm[i] == perm[j]:
+                    w.append(d)
+                else:
+                    b.append(d)
+        if w and b:
+            if (np.mean(b) - np.mean(w)) >= observed_diff:
+                count_ge += 1
+    perm_p = (count_ge + 1) / (n_perm + 1)
+
     result.update({
         'mannwhitney_U':  float(stat),
         'p_value':        float(pval),
+        'p_value_note':   'Mann-Whitney treats pairwise distances as independent; see perm_p_value',
+        'perm_p_value':   float(perm_p),
         'effect_size_r':  r,
-        'significant':    bool(pval < 0.05),
+        'significant':    bool(perm_p < 0.05),
         'interpretation': (
             f"Within-category NCD (mean {result['mean_within']:.3f}) is "
-            f"{'significantly' if pval < 0.05 else 'not significantly'} smaller "
+            f"{'significantly' if perm_p < 0.05 else 'not significantly'} smaller "
             f"than between-category NCD (mean {result['mean_between']:.3f}), "
-            f"p={pval:.4f}, r={r:.3f} (Mann-Whitney U, one-sided)."
+            f"permutation p={perm_p:.4f}, MW p={pval:.4f}, r={r:.3f}."
         ),
     })
 
