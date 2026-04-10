@@ -47,3 +47,20 @@ test_manual_compiler/
 # Jupyter checkpoints
 .ipynb_checkpoints/
 results/**/corpus.json
+
+# Validation regenerable artifacts
+validation/compiled_binaries/
+validation/results/corpus_B/
+validation/results/corpus_C/
+validation/results/synthetic_validation/
+
+# Additional results directories (regenerable)
+results/smoke_fresh/
+results/smoke_rerun/
+results/compiler_matrix_rerun/
+results/system/
+
+# Misc
+findings.txt
+review.txt
+arxiv-submission.zip

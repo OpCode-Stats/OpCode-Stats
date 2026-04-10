@@ -1,0 +1,247 @@
+{
+  "sample_binaries": [
+    "/usr/bin/grep",
+    "/usr/bin/bash",
+    "/usr/bin/find",
+    "/usr/bin/tar",
+    "/usr/bin/xz"
+  ],
+  "check_1_mnemonic_counts": {
+    "status": "PASS",
+    "binaries": {
+      "grep": {
+        "status": "PASS",
+        "reference_total": 32960,
+        "extracted_total": 32960,
+        "mnemonic_mismatches": {}
+      },
+      "bash": {
+        "status": "PASS",
+        "reference_total": 241789,
+        "extracted_total": 241789,
+        "mnemonic_mismatches": {}
+      },
+      "find": {
+        "status": "PASS",
+        "reference_total": 30632,
+        "extracted_total": 30632,
+        "mnemonic_mismatches": {}
+      },
+      "tar": {
+        "status": "PASS",
+        "reference_total": 72100,
+        "extracted_total": 72100,
+        "mnemonic_mismatches": {}
+      },
+      "xz": {
+        "status": "PASS",
+        "reference_total": 10580,
+        "extracted_total": 10580,
+        "mnemonic_mismatches": {}
+      }
+    }
+  },
+  "check_2_instruction_boundaries": {
+    "status": "PASS",
+    "binaries": {
+      "grep": {
+        "status": "PASS",
+        "functions_with_instr_count_mismatch": 0,
+        "instr_count_mismatches": [],
+        "non_monotonic_address_functions": [],
+        "continuation_lines_in_raw": 1241,
+        "bad_opcode_lines_in_raw": 0
+      },
+      "bash": {
+        "status": "PASS",
+        "functions_with_instr_count_mismatch": 0,
+        "instr_count_mismatches": [],
+        "non_monotonic_address_functions": [],
+        "continuation_lines_in_raw": 7270,
+        "bad_opcode_lines_in_raw": 0
+      },
+      "find": {
+        "status": "PASS",
+        "functions_with_instr_count_mismatch": 0,
+        "instr_count_mismatches": [],
+        "non_monotonic_address_functions": [],
+        "continuation_lines_in_raw": 1185,
+        "bad_opcode_lines_in_raw": 0
+      },
+      "tar": {
+        "status": "PASS",
+        "functions_with_instr_count_mismatch": 0,
+        "instr_count_mismatches": [],
+        "non_monotonic_address_functions": [],
+        "continuation_lines_in_raw": 2690,
+        "bad_opcode_lines_in_raw": 0
+      },
+      "xz": {
+        "status": "PASS",
+        "functions_with_instr_count_mismatch": 0,
+        "instr_count_mismatches": [],
+        "non_monotonic_address_functions": [],
+        "continuation_lines_in_raw": 328,
+        "bad_opcode_lines_in_raw": 0
+      }
+    }
+  },
+  "check_3_function_boundaries": {
+    "status": "PASS",
+    "binaries": {
+      "grep": {
+        "status": "PASS",
+        "raw_function_count": 139,
+        "extracted_function_count": 139,
+        "raw_plt_stub_count": 130,
+        "extracted_plt_stub_count": 129,
+        "benign_missing_from_extraction": 0,
+        "problematic_missing_from_extraction": [],
+        "extra_in_extraction_not_in_raw": []
+      },
+      "bash": {
+        "status": "PASS",
+        "raw_function_count": 1902,
+        "extracted_function_count": 1902,
+        "raw_plt_stub_count": 228,
+        "extracted_plt_stub_count": 227,
+        "benign_missing_from_extraction": 0,
+        "problematic_missing_from_extraction": [],
+        "extra_in_extraction_not_in_raw": []
+      },
+      "find": {
+        "status": "PASS",
+        "raw_function_count": 148,
+        "extracted_function_count": 148,
+        "raw_plt_stub_count": 145,
+        "extracted_plt_stub_count": 144,
+        "benign_missing_from_extraction": 0,
+        "problematic_missing_from_extraction": [],
+        "extra_in_extraction_not_in_raw": []
+      },
+      "tar": {
+        "status": "PASS",
+        "raw_function_count": 224,
+        "extracted_function_count": 224,
+        "raw_plt_stub_count": 209,
+        "extracted_plt_stub_count": 208,
+        "benign_missing_from_extraction": 0,
+        "problematic_missing_from_extraction": [],
+        "extra_in_extraction_not_in_raw": []
+      },
+      "xz": {
+        "status": "PASS",
+        "raw_function_count": 107,
+        "extracted_function_count": 107,
+        "raw_plt_stub_count": 104,
+        "extracted_plt_stub_count": 103,
+        "benign_missing_from_extraction": 0,
+        "problematic_missing_from_extraction": [],
+        "extra_in_extraction_not_in_raw": []
+      }
+    }
+  },
+  "check_4_hardlink_filtering": {
+    "status": "PASS",
+    "hard_linked_pairs_found": 7,
+    "hard_linked_pairs_sample": [
+      {
+        "path_a": "/usr/bin/bunzip2",
+        "path_b": "/usr/bin/bzcat",
+        "inode_a": 3124,
+        "inode_b": 3124,
+        "same_inode": true
+      },
+      {
+        "path_a": "/usr/bin/bzcat",
+        "path_b": "/usr/bin/bzip2",
+        "inode_a": 3124,
+        "inode_b": 3124,
+        "same_inode": true
+      },
+      {
+        "path_a": "/usr/bin/perl",
+        "path_b": "/usr/bin/perl5.38.2",
+        "inode_a": 3847,
+        "inode_b": 3847,
+        "same_inode": true
+      },
+      {
+        "path_a": "/usr/bin/perlbug",
+        "path_b": "/usr/bin/perlthanks",
+        "inode_a": 3850,
+        "inode_b": 3850,
+        "same_inode": true
+      },
+      {
+        "path_a": "/usr/bin/gunzip",
+        "path_b": "/usr/bin/uncompress",
+        "inode_a": 4240,
+        "inode_b": 4240,
+        "same_inode": true
+      },
+      {
+        "path_a": "/usr/bin/unzip",
+        "path_b": "/usr/bin/zipinfo",
+        "inode_a": 4411,
+        "inode_b": 4411,
+        "same_inode": true
+      },
+      {
+        "path_a": "/usr/bin/pigz",
+        "path_b": "/usr/bin/unpigz",
+        "inode_a": 473565,
+        "inode_b": 473565,
+        "same_inode": true
+      }
+    ],
+    "scenario_a": {
+      "description": "Both hard-linked names passed \u2192 expect 1 result",
+      "inputs": [
+        "bunzip2",
+        "bzcat"
+      ],
+      "output_count": 1,
+      "status": "PASS"
+    },
+    "scenario_b": {
+      "description": "Only first hard-linked name passed \u2192 expect 1 result",
+      "inputs": [
+        "bunzip2"
+      ],
+      "output_count": 1,
+      "status": "PASS"
+    },
+    "scenario_c": {
+      "description": "All names from pairs \u2192 output length equals unique inode count",
+      "input_count": 14,
+      "output_count": 6,
+      "unique_inodes": 6,
+      "status": "PASS"
+    }
+  },
+  "check_5_timeout_handling": {
+    "status": "PASS",
+    "subcheck_5a": {
+      "description": "run_objdump raises DisassemblyError on TimeoutExpired",
+      "status": "PASS",
+      "raised_disassembly_error": true
+    },
+    "subcheck_5b": {
+      "description": "disassemble_binary returns None when objdump times out",
+      "status": "PASS",
+      "binary_object_is_none": true
+    },
+    "subcheck_5c": {
+      "description": "disassemble_binary returns None on objdump non-zero exit",
+      "status": "PASS",
+      "binary_object_is_none": true
+    }
+  },
+  "overall": {
+    "status": "PASS",
+    "checks_passed": 5,
+    "checks_failed": 0,
+    "checks_skipped": 0
+  }
+}

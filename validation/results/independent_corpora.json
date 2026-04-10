@@ -1,0 +1,152 @@
+{
+  "description": "Cross-corpus validation: three independent corpora of system binaries are analysed to confirm that the pre-registered primary metrics are consistent across different sets of binaries.",
+  "corpus_A": {
+    "corpus": "corpus_A",
+    "n_binaries": 15,
+    "binary_names": [
+      "grep",
+      "sed",
+      "gzip",
+      "bzip2",
+      "xz",
+      "find",
+      "tar",
+      "bash",
+      "python3",
+      "curl",
+      "git",
+      "vim",
+      "nano",
+      "gcc",
+      "objdump"
+    ],
+    "h1_bits": 3.9834,
+    "h5_rate_bits": 2.8628,
+    "h5_rate_shuffled_bits": 3.6852,
+    "entropy_rate_real_lt_shuffled": true,
+    "mean_zlib_real": 0.2212,
+    "mean_zlib_shuffled": 0.3602,
+    "compression_gap": -0.139,
+    "compression_real_lt_shuffled": true,
+    "mi_half_life_lag": 2.0,
+    "bigram_lm_perplexity": 8.072,
+    "mean_ncd_within": 0.9791
+  },
+  "corpus_B": {
+    "corpus": "corpus_B",
+    "n_binaries": 15,
+    "binary_names": [
+      "ssh",
+      "scp",
+      "wget",
+      "diff",
+      "patch",
+      "make",
+      "ld",
+      "as",
+      "nm",
+      "readelf",
+      "strace",
+      "top",
+      "htop",
+      "less",
+      "more"
+    ],
+    "h1_bits": 3.9706,
+    "h5_rate_bits": 2.7675,
+    "h5_rate_shuffled_bits": 3.5368,
+    "entropy_rate_real_lt_shuffled": true,
+    "mean_zlib_real": 0.3686,
+    "mean_zlib_shuffled": 0.5828,
+    "compression_gap": -0.2143,
+    "compression_real_lt_shuffled": true,
+    "mi_half_life_lag": 2.0,
+    "bigram_lm_perplexity": 8.248,
+    "mean_ncd_within": 0.9854
+  },
+  "corpus_C": {
+    "corpus": "corpus_C",
+    "n_binaries": 9,
+    "binary_names": [
+      "perl",
+      "ruby",
+      "php",
+      "java",
+      "gdb",
+      "g++",
+      "cmake",
+      "node",
+      "clang-19"
+    ],
+    "h1_bits": 3.9877,
+    "h5_rate_bits": 2.7944,
+    "h5_rate_shuffled_bits": 3.7661,
+    "entropy_rate_real_lt_shuffled": true,
+    "mean_zlib_real": 0.2351,
+    "mean_zlib_shuffled": 0.4067,
+    "compression_gap": -0.1716,
+    "compression_real_lt_shuffled": true,
+    "mi_half_life_lag": 2.0,
+    "bigram_lm_perplexity": 7.843,
+    "mean_ncd_within": 0.9757
+  },
+  "cross_lm_evaluation": [
+    {
+      "train": "A",
+      "test": "B",
+      "cross_entropy_bits": 3.1331,
+      "perplexity": 8.773
+    },
+    {
+      "train": "A",
+      "test": "C",
+      "cross_entropy_bits": 3.1827,
+      "perplexity": 9.08
+    },
+    {
+      "train": "B",
+      "test": "A",
+      "cross_entropy_bits": 3.1507,
+      "perplexity": 8.881
+    },
+    {
+      "train": "B",
+      "test": "C",
+      "cross_entropy_bits": 3.224,
+      "perplexity": 9.344
+    },
+    {
+      "train": "C",
+      "test": "A",
+      "cross_entropy_bits": 3.1708,
+      "perplexity": 9.006
+    },
+    {
+      "train": "C",
+      "test": "B",
+      "cross_entropy_bits": 3.2193,
+      "perplexity": 9.313
+    }
+  ],
+  "consistency_checks": {
+    "criterion_1_entropy_rate_real_lt_shuffled": {
+      "A": true,
+      "B": true,
+      "C": true,
+      "pass": true
+    },
+    "criterion_2_compression_real_lt_shuffled": {
+      "A": true,
+      "B": true,
+      "C": true,
+      "pass": true
+    },
+    "criterion_3_cross_ppl_within_2x": {
+      "mean_within_corpus_ppl": 8.054,
+      "mean_cross_corpus_ppl": 9.066,
+      "ratio": 1.126,
+      "pass": true
+    },
+    "overall_pass": true
+  }
+}

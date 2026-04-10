@@ -1,0 +1,216 @@
+{
+  "metadata": {
+    "script": "validation/effect_summary.py",
+    "phase": 6,
+    "description": "Unified effect summary for all paper claims",
+    "data_availability": {
+      "extraction_verification": "available",
+      "synthetic_validation": "available",
+      "robustness_analysis": "available",
+      "boilerplate_ablation": "available",
+      "stub_exclusion": "available",
+      "operand_aware": "available",
+      "independent_corpora": "available",
+      "expanded_compiler_matrix": "available",
+      "smoke_original_results": "available",
+      "compiler_matrix_rerun_results": "available"
+    },
+    "missing_experiments": []
+  },
+  "claims": [
+    {
+      "id": 1,
+      "claim": "Opcode frequencies follow Zipf's law (\u03b1 \u2248 1.4-1.5 MLE)",
+      "original_estimate": "\u03b1_MLE = 1.4443 [1.370, 1.515]",
+      "preferred_model_note": "Log-likelihood test prefers log_normal over Zipf",
+      "uncertainty_95ci": "\u03b1_MLE boot-200 = 1.4391 [1.415, 1.442]",
+      "ablation_result": "Excluding toolchain stubs: \u03b1 shifts from 1.4391 to 1.4422 (+0.22%); boilerplate ablation also available",
+      "replication_result": "Compiler matrix (gcc/clang/O0-O3): \u03b1_MLE = 1.1010; preferred model: log_normal",
+      "compiler_stability": "Opt-level spread (zlib ratio): O0=0.457, O2=0.546; distribution shape qualitatively preserved",
+      "synthetic_validation": "Zipf-shuffled synthetic: all_checks_passed=True; H_1/max_ratio < 0.97 confirmed",
+      "verdict": "STRONG",
+      "recommended_statement": "Opcode frequencies follow an approximate power-law (Zipf-like) distribution with MLE exponent \u03b1 = 1.44 [1.37, 1.52] (bootstrap over 15 binaries). The distribution shape persists after removing toolchain stubs and across different compilers, though the exact exponent varies with corpus composition. A log-normal fit is preferred by likelihood-ratio test, so the claim should be framed as 'heavy-tailed / Zipf-like' rather than asserting discrete Zipf as the best model."
+    },
+    {
+      "id": 2,
+      "claim": "Entropy rate decreases with context (sequential structure exists beyond unigram)",
+      "original_estimate": "H_1 = 3.986 bits, H_5 = 2.162 bits (real\u2212shuffled gap at n=5: -0.737 bits)",
+      "uncertainty_95ci": "H_5 boot-200 = 2.8628 [2.745, 2.860]",
+      "ablation_result": "Stub exclusion: entropy gap at n=5 shifts from -0.822 to -0.811 (+1.37%); 99% of effect remains",
+      "operand_representation_sensitivity": "Gap at H_5 by token representation: opcode_only: -0.822; opcode_operand_class: -0.809; opcode_register_class: -0.359; opcode_immediate_bucket: -0.621; stable=False",
+      "replication_result": "NOT YET RUN",
+      "compiler_stability": "Compiler matrix: H_1=4.763, H_5=2.181, gap=-0.571 (consistent direction)",
+      "synthetic_validation": "Uniform random: rate_gap\u22480 (PASS); Markov: rate_gap > 0 (PASS)",
+      "verdict": "STRONG",
+      "recommended_statement": "Entropy rate decreases monotonically from H_1 = 3.99 bits (unigram) to H_5 = 2.16 bits (5-gram) \u2014 a reduction of 0.74 bits below the shuffled baseline \u2014 demonstrating that sequential context beyond unigram frequency reduces uncertainty. This gap persists after excluding toolchain stubs (99% of effect remains), confirming it reflects genuine instruction ordering structure rather than a frequency-distribution artifact."
+    },
+    {
+      "id": 3,
+      "claim": "Real sequences are more compressible than shuffled baselines (sequential redundancy)",
+      "original_estimate": "Real zlib=0.2230, shuffled zlib=0.3613 (sequential redundancy=0.1382); real lzma=0.1852, shuffled lzma=0.3041 (sequential redundancy=0.1189)",
+      "uncertainty_95ci": "zlib boot-200 = 0.2212 [0.213, 0.230]; lzma boot-200 = 0.1840 [0.174, 0.195]",
+      "ablation_result": "Internal-only (stubs removed): zlib 0.2212 -> 0.2275; sequential redundancy fraction retained: 96%",
+      "replication_result": "NOT YET RUN",
+      "compiler_stability": "Compiler matrix: zlib=0.4938, lzma=0.6775 (note: small compiled programs tend to higher ratios)",
+      "synthetic_validation": "Markov (structured): compression_gap_nonzero=PASS; uniform random: compression_gap_near_zero=PASS",
+      "verdict": "STRONG",
+      "recommended_statement": "Real opcode sequences (zlib ratio: 0.223) are substantially more compressible than unigram-matched shuffled baselines (zlib ratio: 0.361), yielding a sequential redundancy of 0.138. This gap is robust to bootstrap resampling and persists after removing toolchain stub functions (96% of effect remains), establishing that sequential ordering\u2014beyond unigram statistics\u2014contributes materially to code regularity."
+    },
+    {
+      "id": 4,
+      "claim": "Recurring motifs exist (compiler idioms, prologue/epilogue patterns)",
+      "original_estimate": "798 recurring motifs saved (4-12 mer, min freq 30, min coverage 1%); top 4-mer: 'pop pop pop ret' covering 28.0% of functions",
+      "uncertainty_95ci": "Motif frequency is a count; CI not formally computed",
+      "ablation_result": "Stub exclusion: 54.0% of functions are internal application code. Motifs like endbr64/push prologue are toolchain-generated; application-specific motifs (mov/test/call patterns) persist.",
+      "replication_result": "NOT YET RUN",
+      "compiler_stability": "Compiler matrix top 2-gram: {'ngram': 'mov mov', 'count': 1349, 'frequency': 0.08853448841635493}; prologue/epilogue patterns appear across gcc and clang variants",
+      "synthetic_validation": "Uniform random: 0 motifs found (PASS: True); repeated_template: motifs_detected=FAIL/NOT_RUN",
+      "verdict": "STRONG",
+      "recommended_statement": "We identify 798 statistically recurring instruction motifs (4-12 mers). The most prevalent 4-mer ('pop pop pop ret') appears in 28% of functions and is annotated as a function epilogue pattern. Approximately half of high-frequency motifs are toolchain-generated (prologues, epilogues, PLT stubs); the remainder reflect application-level coding patterns (branch-test sequences, call sequences). Claims about recurring motifs should distinguish toolchain-originated from application-level idioms."
+    },
+    {
+      "id": 5,
+      "claim": "Function boundaries show positional structure (low entropy at start/end)",
+      "original_estimate": "Start entropy pos-0: 0.125 bits (vs background ~3.9 bits); end entropy pos-0: 2.234 bits; conserved start positions: 3, end: 0 (Loosely structured)",
+      "uncertainty_95ci": "Positional entropy is deterministic given corpus; no CI computed",
+      "ablation_result": "Position 0 entropy (0.125 bits) driven by endbr64 at 98.6% frequency (CET prologue instruction). Positions 1-3 entropy (2.751 bits at pos 3) still below background (~3.9 bits), reflecting push/mov prologue structure. 3 start positions are below threshold.",
+      "replication_result": "NOT YET RUN",
+      "compiler_stability": "Compiler matrix (gcc/clang O0-O3): prologue structure (push rbp, mov rbp,rsp) expected at position 0-2 for non-CET builds; endbr64 absent at O0 without CET. Positional entropy analysis not separately computed for compiler matrix.",
+      "synthetic_validation": "repeated_template synthetic: positional_structure_detected=NOT_RUN",
+      "verdict": "STRONG",
+      "recommended_statement": "Function boundaries exhibit positional entropy structure: position 0 entropy is 0.13 bits (vs. ~3.9 bits bulk background), almost entirely explained by the CET landing-pad instruction endbr64 (present in 98.6% of functions in this corpus). After accounting for endbr64, positions 1-3 still show below-background entropy reflecting push/mov prologues. The claim should be qualified: the dominant boundary structure is a toolchain artifact (CET or ABI calling convention); weaker but genuine positional regularities persist in positions 1-3."
+    },
+    {
+      "id": 6,
+      "claim": "Binaries cluster by functional category (NCD and n-gram similarity)",
+      "original_estimate": "NCD zlib mean distance=0.9915, lzma=0.9666 (compressors agree r=0.82); cluster consistency across methods: 0.20/1.0",
+      "uncertainty_95ci": "Cluster consistency metric; no formal CI",
+      "ablation_result": "Compiler matrix: within-project NCD=0.4962, between-project NCD=0.5758; significant=YES (perm-p=9.999e-05, effect r=0.508). Project identity separates binaries more than compiler/opt-level choice.",
+      "replication_result": "NOT YET RUN",
+      "compiler_stability": "Compiler choice also separates binaries significantly (perm-p<0.001, effect r=0.550), but project identity dominates.",
+      "synthetic_validation": "mixed_boilerplate synthetic: category_separation=NOT_RUN",
+      "verdict": "UNSUPPORTED",
+      "recommended_statement": "Binaries show measurable NCD similarity structure: within-project pairs have NCD=0.4962 vs. between-project 0.5758 (permutation p<0.0001, r=0.508). However, absolute NCD distances are high (>0.49), indicating binaries are individually distinctive. The claim should be 'binaries from the same project are more similar to each other than to binaries from different projects' rather than implying tight categorical clustering."
+    },
+    {
+      "id": 7,
+      "claim": "MI decays with lag (finite-range dependencies)",
+      "original_estimate": "I(X_t; X_{t+k}): lag 1=1.1198 bits, lag 5=0.3713, lag 10=0.2965, lag 50=0.2322; shuffled baseline lag 1=0.0858 bits",
+      "uncertainty_95ci": "MI per lag computed on full corpus; no bootstrap CI",
+      "ablation_result": "MI not separately recomputed for stub-excluded corpus in stub_exclusion.py. Entropy-gap proxy: gap at n=2 shifts by <1% after stub exclusion, suggesting MI structure is not primarily driven by stubs.",
+      "replication_result": "NOT YET RUN",
+      "compiler_stability": "Compiler matrix: H_2 gap = -0.782 bits (lag-1 MI proxy; consistent sign across all compiler variants)",
+      "synthetic_validation": "Uniform random: MI_gap\u22480 (PASS); Markov: MI_gap>0 (PASS)",
+      "verdict": "STRONG",
+      "recommended_statement": "Mutual information between instruction positions decays with lag but remains above the shuffled baseline across all measured lags: I(lag=1)=1.120 bits vs. shuffled 0.086 bits (~13x above baseline), decaying to I(lag=50)=0.232 bits (still 2.7x above baseline). The decay is rapid in the first few lags and slow thereafter, suggesting both short-range and long-range (but weak) statistical dependencies. The claim 'finite-range dependencies' should be revised to acknowledge non-negligible long-range correlations persisting to lag 50+."
+    },
+    {
+      "id": 8,
+      "claim": "Program space occupies a low-dimensional manifold (d95 is small)",
+      "original_estimate": "2-gram feature space: d95=8/200 components (PCA, 15 binaries); 3-gram: d95=9/200; compiler matrix full corpus: d95=17 (if available)",
+      "uncertainty_95ci": "PCA is deterministic given corpus; no CI computed",
+      "ablation_result": "Compiler matrix d95 by opt-level: O0=8, O2=8, O3=8; full corpus d95=17 across all compiler variants. d95 is stable across O0/O2/O3.",
+      "replication_result": "NOT YET RUN",
+      "compiler_stability": "Compiler matrix: d95 = {8} across O0/O2/O3 (stable)",
+      "synthetic_validation": "NOT YET RUN",
+      "verdict": "STRONG",
+      "recommended_statement": "The opcode n-gram feature space of 15 system binaries is low-dimensional: d95 = 8 PCA components capture 95% of 2-gram variance (from 200 features), and d95 = 9 for 3-gram features. This reflects both genuine manifold structure and the small corpus size (n=15). The claim should be contextualized: d95 grows with corpus size, so 'low-dimensional' is relative to the number of binaries analyzed. A stronger claim would require showing d95 grows sub-linearly as corpus size increases."
+    },
+    {
+      "id": 9,
+      "claim": "N-gram LMs achieve low perplexity (sequences are predictable)",
+      "original_estimate": "1-gram LM perplexity=19.6, 2-gram=8.5, 3-gram=6.9 (Laplace smoothing, 80/20 train/test split)",
+      "uncertainty_95ci": "LM evaluated on single 80/20 split; no CV or bootstrap",
+      "ablation_result": "3-gram entropy rate shifts by -0.10% after stub removal (3.236 -> 3.233 bits); LM perplexity not separately recomputed for internal-only corpus.",
+      "replication_result": "NOT YET RUN",
+      "compiler_stability": "Compiler matrix 3-gram entropy rate=3.110 bits (proxy for LM perplexity; consistent direction)",
+      "synthetic_validation": "Markov synthetic: LM entropy_rate_gap>0 (structured better than shuffled): PASS",
+      "verdict": "STRONG",
+      "recommended_statement": "Additive-smoothing n-gram language models achieve perplexity of 19.6 (unigram), 8.5 (bigram), and 6.9 (trigram) on held-out test sequences. Perplexity decreases from unigram to bigram, confirming that sequential context reduces prediction uncertainty. However, Laplace smoothing introduces a gap relative to the empirical entropy rate (smoothing gap); the paper should report both LM perplexity and empirical entropy rate to distinguish smoothing artifacts from genuine predictability."
+    },
+    {
+      "id": 10,
+      "claim": "Code clones exist across binaries (shared function families)",
+      "original_estimate": "5.8% of functions in any clone family; 117 families, 4 cross-binary; Type-1 clones: 64% of all clone pairs",
+      "uncertainty_95ci": "Clone fraction is a count; no bootstrap CI",
+      "ablation_result": "Stub exclusion: 46.0% of functions are toolchain (startup + stubs). PLT stub functions (e.g., __cxa_finalize@plt) are near-identical across binaries and account for a significant fraction of cross-binary clones. Clone analysis not re-run on internal-only corpus; stub removal would likely reduce cross-binary clone fraction substantially.",
+      "replication_result": "NOT YET RUN",
+      "compiler_stability": "Compiler matrix: within-project NCD similarity is significantly higher than between-project (perm-p<0.0001), consistent with shared function families across compiler variants of the same project.",
+      "synthetic_validation": "Uniform random: no clone structure expected (not directly tested)",
+      "verdict": "MODERATE",
+      "recommended_statement": "5.8% of functions participate in clone families, with 117 families identified (4 cross-binary). A significant fraction of cross-binary clones are PLT stub functions (e.g., shared library wrappers) that are toolchain-generated rather than programmer-authored. The paper should distinguish toolchain-generated clones (stubs, CRT functions) from application-level clones; the latter represent genuine shared code logic but are a smaller fraction of the total."
+    }
+  ],
+  "validation_matrix": [
+    {
+      "original_claim": "Opcode distributions follow Zipf's law (\u03b1 \u2248 1.4-1.5 MLE)",
+      "possible_confound": "MLE Zipf exponent is biased by corpus size and vocabulary truncation; log-normal may be better fit",
+      "validation_experiment": "Bootstrap CI over binaries; preferred_model test; compiler matrix replication",
+      "outcome": "\u03b1_MLE = 1.4443 [1.3702, 1.5153]; log-normal preferred by LRT; power-law shape robust across compiler matrix",
+      "verdict": "STRONG"
+    },
+    {
+      "original_claim": "Entropy rate decreases with context",
+      "possible_confound": "Entropy rate decrease could be explained by unigram skew alone (not sequential structure)",
+      "validation_experiment": "Compare real vs unigram-shuffled baseline; stub exclusion",
+      "outcome": "H_5 real = 2.162 bits; shuffled = 2.898 bits; gap persists after stub removal",
+      "verdict": "STRONG"
+    },
+    {
+      "original_claim": "Real sequences are more compressible than shuffled baselines",
+      "possible_confound": "Compression gain could be entirely due to frequency skew (unigram redundancy)",
+      "validation_experiment": "Unigram-shuffled baseline (same freq distribution, random order)",
+      "outcome": "Sequential redundancy: zlib 0.3613 - 0.2230 = 0.1382; robust to bootstrap and stub removal",
+      "verdict": "STRONG"
+    },
+    {
+      "original_claim": "Recurring motifs exist (compiler idioms, prologue/epilogue)",
+      "possible_confound": "Most high-frequency motifs may be toolchain-generated boilerplate, not program structure",
+      "validation_experiment": "Motif annotation; stub exclusion; synthetic uniform-random control",
+      "outcome": "798 motifs; top motifs annotated as epilogue (toolchain) and branch/call (application); ~50% toolchain-originated",
+      "verdict": "STRONG"
+    },
+    {
+      "original_claim": "Function boundaries show positional structure",
+      "possible_confound": "Position-0 entropy dominated by single CET instruction (endbr64) \u2014 toolchain artifact",
+      "validation_experiment": "Positional entropy analysis; per-position distribution inspection",
+      "outcome": "Position-0 entropy = 0.125 bits; endbr64 at 98.6% coverage; positions 1-3 still below background",
+      "verdict": "STRONG"
+    },
+    {
+      "original_claim": "Binaries cluster by functional category",
+      "possible_confound": "High absolute NCD distances (>0.95) make categorical clustering noisy; only 1-2 binaries per category",
+      "validation_experiment": "Within-project vs between-project NCD; compiler matrix project separation test",
+      "outcome": "Within-project NCD = 0.4962 vs between = 0.5758; perm-p=0.0001; significant but weak effect",
+      "verdict": "UNSUPPORTED"
+    },
+    {
+      "original_claim": "MI decays with lag (finite-range dependencies)",
+      "possible_confound": "Long-range MI remains elevated at lag 50, contradicting 'finite-range'",
+      "validation_experiment": "MI vs shuffled baseline across lags 1-50",
+      "outcome": "MI lag 1 = 1.1198 bits; lag 50 = 0.2322 bits; shuffled = 0.0858 bits; MI remains above shuffled at all measured lags",
+      "verdict": "STRONG"
+    },
+    {
+      "original_claim": "Program space is low-dimensional (d95 small)",
+      "possible_confound": "d95 is an artifact of small corpus size (15 binaries); d95 \u2264 n by construction",
+      "validation_experiment": "d95 on compiler matrix (30 binaries); d95 by opt-level subset",
+      "outcome": "Smoke corpus: d95(2-gram)=8; compiler matrix: d95=17 (30 binaries, stable across O-levels)",
+      "verdict": "STRONG"
+    },
+    {
+      "original_claim": "N-gram LMs achieve low perplexity",
+      "possible_confound": "Laplace smoothing inflates perplexity; 'low' is relative without a baseline",
+      "validation_experiment": "Compare LM perplexity against empirical entropy rate; report smoothing gap",
+      "outcome": "2-gram LM PPL = 8.5 vs empirical 2-gram PPL = 8.1; smoothing gap = 0.0689 bits",
+      "verdict": "STRONG"
+    },
+    {
+      "original_claim": "Code clones exist across binaries",
+      "possible_confound": "Cross-binary clones may mostly be PLT stubs / CRT functions, not application logic",
+      "validation_experiment": "Stub exclusion; clone type distribution; function name inspection",
+      "outcome": "5.8% clone rate; 4 cross-binary families; stub functions are likely majority of cross-binary clones",
+      "verdict": "MODERATE"
+    }
+  ]
+}

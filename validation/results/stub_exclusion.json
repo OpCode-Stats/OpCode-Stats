@@ -1,0 +1,214 @@
+{
+  "function_classification": {
+    "startup_runtime": {
+      "count": 23,
+      "instruction_count": 69,
+      "function_names_sample": [
+        "__cxa_finalize@plt",
+        "__cxa_atexit@plt",
+        "__cxa_finalize@plt",
+        "__cxa_atexit@plt",
+        "__cxa_finalize@plt",
+        "__cxa_finalize@plt",
+        "__cxa_finalize@plt",
+        "__cxa_finalize@plt",
+        "__cxa_atexit@plt",
+        "__cxa_finalize@plt",
+        "__cxa_finalize@plt",
+        "__libc_current_sigrtmin@plt",
+        "__libc_current_sigrtmax@plt",
+        "__libc_current_sigrtmax@plt",
+        "__libc_current_sigrtmin@plt",
+        "__cxa_finalize@plt",
+        "__cxa_finalize@plt",
+        "__cxa_atexit@plt",
+        "__cxa_finalize@plt",
+        "__cxa_finalize@plt"
+      ]
+    },
+    "stubs": {
+      "count": 2749,
+      "instruction_count": 16955,
+      "function_names_sample": [
+        ".plt",
+        "free@plt",
+        "__ctype_toupper_loc@plt",
+        "getenv@plt",
+        "__snprintf_chk@plt",
+        "raise@plt",
+        "__vfprintf_chk@plt",
+        "__mempcpy_chk@plt",
+        "abort@plt",
+        "re_match@plt",
+        "__errno_location@plt",
+        "strncmp@plt",
+        "splice@plt",
+        "_exit@plt",
+        "strcpy@plt",
+        "__fpending@plt",
+        "puts@plt",
+        "ferror@plt",
+        "qsort@plt",
+        "isatty@plt"
+      ]
+    },
+    "internal": {
+      "count": 3253,
+      "instruction_count": 2896797,
+      "function_names_sample": [
+        ".init",
+        "_obstack_newchunk@@Base-0x1ac30",
+        "_obstack_newchunk@@Base",
+        "_obstack_allocated_p@@Base",
+        "_obstack_free@@Base",
+        "_obstack_memory_used@@Base",
+        "_obstack_begin@@Base",
+        "_obstack_begin_1@@Base",
+        ".fini",
+        ".init",
+        "_obstack_begin@@Base-0xc090",
+        "_obstack_begin@@Base",
+        "_obstack_begin_1@@Base",
+        "_obstack_newchunk@@Base",
+        "_obstack_allocated_p@@Base",
+        "_obstack_free@@Base",
+        "_obstack_memory_used@@Base",
+        ".fini",
+        ".init",
+        ".text"
+      ]
+    }
+  },
+  "metrics_by_category": {
+    "all": {
+      "total_binaries": 15,
+      "total_functions": 6025,
+      "total_instructions": 2913821,
+      "zipf_alpha": 1.4390980055963374,
+      "entropy_rates": [
+        3.983350769743656,
+        3.4980882821025414,
+        3.2364121758734616,
+        3.039476941169658,
+        2.862777582666346
+      ],
+      "shuffled_entropy_rates": [
+        3.983350769743656,
+        3.980854572146441,
+        3.9621675447119427,
+        3.8824500950089327,
+        3.6851632777389325
+      ],
+      "entropy_gaps": [
+        0.0,
+        -0.48276629004389937,
+        -0.725755368838481,
+        -0.8429731538392748,
+        -0.8223856950725863
+      ],
+      "compression": {
+        "zlib_ratio_mean": 0.22124024947393198,
+        "lzma_ratio_mean": 0.1840047117136247
+      }
+    },
+    "startup_runtime": {
+      "total_binaries": 15,
+      "total_functions": 23,
+      "total_instructions": 69,
+      "zipf_alpha": 0.0,
+      "entropy_rates": [
+        1.723397840820545,
+        0.9503250824603345,
+        0.6204192457133954,
+        0.5321317359801881,
+        0.3551046987346978
+      ],
+      "shuffled_entropy_rates": [
+        1.723397840820545,
+        1.5668969371588153,
+        1.4039007141427389,
+        1.1254072918469558,
+        0.817492568250068
+      ],
+      "entropy_gaps": [
+        0.0,
+        -0.6165718546984807,
+        -0.7834814684293435,
+        -0.5932755558667676,
+        -0.4623878695153702
+      ],
+      "compression": {
+        "zlib_ratio_mean": 2.985185185185185,
+        "lzma_ratio_mean": 15.437037037037035
+      }
+    },
+    "stubs": {
+      "total_binaries": 15,
+      "total_functions": 2749,
+      "total_instructions": 16955,
+      "zipf_alpha": 0.8594818115437727,
+      "entropy_rates": [
+        2.22118258842877,
+        1.5169666473744006,
+        1.058969334462417,
+        0.7983365561743336,
+        0.6404424244210045
+      ],
+      "shuffled_entropy_rates": [
+        2.22118258842877,
+        2.216693502773319,
+        2.210057210679253,
+        2.198301823594847,
+        2.1694040429416113
+      ],
+      "entropy_gaps": [
+        0.0,
+        -0.6997268553989182,
+        -1.1510878762168362,
+        -1.3999652674205132,
+        -1.5289616185206067
+      ],
+      "compression": {
+        "zlib_ratio_mean": 0.028189953114353516,
+        "lzma_ratio_mean": 0.0961069631151399
+      }
+    },
+    "internal": {
+      "total_binaries": 15,
+      "total_functions": 3253,
+      "total_instructions": 2896797,
+      "zipf_alpha": 1.4422484915018234,
+      "entropy_rates": [
+        3.972190234175078,
+        3.491350365998349,
+        3.2332981980839546,
+        3.0398613673467816,
+        2.8654308633661714
+      ],
+      "shuffled_entropy_rates": [
+        3.972190234175078,
+        3.9697057189101073,
+        3.951078915217481,
+        3.8718179774908092,
+        3.676540662647034
+      ],
+      "entropy_gaps": [
+        0.0,
+        -0.4783553529117581,
+        -0.7177807171335262,
+        -0.8319566101440277,
+        -0.8111097992808625
+      ],
+      "compression": {
+        "zlib_ratio_mean": 0.22745051838866476,
+        "lzma_ratio_mean": 0.1893831792277737
+      }
+    }
+  },
+  "comparison": {
+    "structure_is_generic_toolchain": "46.0% of functions are toolchain (startup + stubs)",
+    "structure_is_application_specific": "54.0% of functions are internal application code",
+    "compression_ratio_change_internal_vs_all": "zlib ratio shifts by -0.0062 when toolchain functions are excluded",
+    "h5_rate_change_internal_vs_all": "H5 entropy rate shifts from 2.8628 to 2.8654 (+0.0027) after removing toolchain functions"
+  }
+}

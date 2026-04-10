@@ -1,0 +1,197 @@
+{
+  "uniform_random": {
+    "corpus_id": "uniform_random",
+    "corpus_name": "Uniform Random",
+    "n_binaries": 8,
+    "n_functions_per_binary": 15,
+    "n_instructions_per_function": 150,
+    "elapsed_seconds": 0.6,
+    "checks": [
+      {
+        "check": "uniform_entropy_near_max",
+        "passed": true,
+        "detail": "H_1/1=5.670 bits, max=5.672 bits (ratio=1.000, need >=0.92)"
+      },
+      {
+        "check": "uniform_rate_gap_near_zero",
+        "passed": true,
+        "detail": "Rate gap (real-shuffled) at n=3: +0.001 bits (need |gap|<0.30)"
+      },
+      {
+        "check": "uniform_compression_gap_near_zero",
+        "passed": true,
+        "detail": "Compression gap (shuffled-real) zlib: +0.000 (need |gap|<0.10)"
+      },
+      {
+        "check": "uniform_no_motifs",
+        "passed": true,
+        "detail": "Found 0 4-mer motifs (need 0)"
+      },
+      {
+        "check": "uniform_mi_gap_near_zero",
+        "passed": true,
+        "detail": "MI gap (real-shuffled) at lag 1 = 0.0038 bits (need |gap|<0.05)"
+      }
+    ],
+    "passed": 5,
+    "total": 5,
+    "all_passed": true
+  },
+  "zipf_shuffled": {
+    "corpus_id": "zipf_shuffled",
+    "corpus_name": "Zipf-Shuffled",
+    "n_binaries": 8,
+    "n_functions_per_binary": 15,
+    "n_instructions_per_function": 150,
+    "elapsed_seconds": 0.4,
+    "checks": [
+      {
+        "check": "zipf_entropy_below_max",
+        "passed": true,
+        "detail": "H_1/1=3.354 bits, max=5.672 bits (ratio=0.591, need <0.97)"
+      },
+      {
+        "check": "zipf_rate_gap_near_zero",
+        "passed": true,
+        "detail": "Rate gap (real-shuffled) at n=3: -0.001 bits (need |gap|<0.30)"
+      },
+      {
+        "check": "zipf_compressible",
+        "passed": true,
+        "detail": "Mean zlib ratio=0.526 (need <1.05)"
+      },
+      {
+        "check": "zipf_mi_gap_near_zero",
+        "passed": true,
+        "detail": "MI gap (real-shuffled) at lag 1 = 0.0003 bits (need |gap|<0.10)"
+      }
+    ],
+    "passed": 4,
+    "total": 4,
+    "all_passed": true
+  },
+  "markov": {
+    "corpus_id": "markov",
+    "corpus_name": "Low-order Markov",
+    "n_binaries": 8,
+    "n_functions_per_binary": 15,
+    "n_instructions_per_function": 150,
+    "elapsed_seconds": 0.6,
+    "checks": [
+      {
+        "check": "markov_entropy_rate_drops",
+        "passed": true,
+        "detail": "Real rate drop n=1->3: 22.6%, Shuffled drop: 17.7% (need real > shuffled+3%)"
+      },
+      {
+        "check": "markov_rate_below_shuffled",
+        "passed": true,
+        "detail": "Real H_3/3=4.389 vs shuffled=4.666 (need real < shuffled)"
+      },
+      {
+        "check": "markov_mi_gap_positive_lag1",
+        "passed": true,
+        "detail": "MI gap (real-shuffled) at lag 1 = 0.1259 bits (need >0.02)"
+      },
+      {
+        "check": "markov_mi_gap_decays",
+        "passed": true,
+        "detail": "MI gap lag1=0.1259, lag5=0.0075 (need lag5 < lag1)"
+      },
+      {
+        "check": "markov_better_compression",
+        "passed": true,
+        "detail": "Mean zlib ratio=0.718 (need <0.98)"
+      }
+    ],
+    "passed": 5,
+    "total": 5,
+    "all_passed": true
+  },
+  "template": {
+    "corpus_id": "template",
+    "corpus_name": "Repeated Template+Noise",
+    "n_binaries": 8,
+    "n_functions_per_binary": 15,
+    "n_instructions_per_function": 150,
+    "elapsed_seconds": 0.4,
+    "checks": [
+      {
+        "check": "template_low_entropy_rate",
+        "passed": true,
+        "detail": "H_1/1=3.950 bits (need < 4.538)"
+      },
+      {
+        "check": "template_rate_below_shuffled",
+        "passed": true,
+        "detail": "Real H_3/3=2.691 vs shuffled=3.693 (need real < 0.90*shuffled)"
+      },
+      {
+        "check": "template_good_compression",
+        "passed": true,
+        "detail": "Mean zlib ratio=0.380 (need <0.85)"
+      },
+      {
+        "check": "template_good_lzma",
+        "passed": true,
+        "detail": "Mean lzma ratio=0.370 (need <0.80)"
+      },
+      {
+        "check": "template_motifs_found",
+        "passed": true,
+        "detail": "Total motifs found across k=4..10: 70 (need >0)"
+      },
+      {
+        "check": "template_motif_matches_template",
+        "passed": true,
+        "detail": "Template sub-sequence found in motifs: True"
+      },
+      {
+        "check": "template_periodic_mi_gap",
+        "passed": true,
+        "detail": "MI gap (real-shuffled) at lag=10: 1.6284 bits (need >0.10)"
+      }
+    ],
+    "passed": 7,
+    "total": 7,
+    "all_passed": true
+  },
+  "boilerplate": {
+    "corpus_id": "boilerplate",
+    "corpus_name": "Mixed Boilerplate",
+    "n_binaries": 8,
+    "n_functions_per_binary": 15,
+    "n_instructions_per_function": 150,
+    "elapsed_seconds": 0.5,
+    "checks": [
+      {
+        "check": "boilerplate_prologue_low_entropy",
+        "passed": true,
+        "detail": "Mean entropy at positions 0..2: 0.000 bits (need <0.5)"
+      },
+      {
+        "check": "boilerplate_epilogue_low_entropy",
+        "passed": true,
+        "detail": "Mean entropy at last 2 positions: 0.000 bits (need <0.5)"
+      },
+      {
+        "check": "boilerplate_body_higher_entropy",
+        "passed": true,
+        "detail": "Body entropy=5.342 vs prologue entropy=0.000 (need body > prologue+1.0)"
+      },
+      {
+        "check": "boilerplate_boundary_motifs_found",
+        "passed": true,
+        "detail": "Boundary motifs ('push mov sub' or 'pop ret') in 4-mers: True. Top 4-mers: ['push mov sub jns', 'push mov sub sar', 'push mov sub js', 'push mov sub nop']"
+      },
+      {
+        "check": "boilerplate_better_compression",
+        "passed": true,
+        "detail": "Mean zlib ratio=0.723 (need <0.95)"
+      }
+    ],
+    "passed": 5,
+    "total": 5,
+    "all_passed": true
+  }
+}
