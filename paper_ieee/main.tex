@@ -136,7 +136,12 @@ xz, find, tar, bash, python3, curl, git, vim, nano, gcc, objdump) and
 \emph{Coreutils-system} (40 binaries spanning 11 functional categories,
 $\leq 10$\,MB each).  Sequences are extracted via \texttt{objdump -d}
 (60\,s timeout per binary); only mnemonics are retained, yielding
-$s{=}(o_1,\dots,o_N)$ over a vocabulary $\mathcal{V}$.
+$s{=}(o_1,\dots,o_N)$ over a vocabulary $\mathcal{V}$.  The 15 smoke
+binaries are a stratified selection (8 functional categories, sizes
+spanning three orders of magnitude), not a random draw; representativeness
+is tested by replicating every metric on the 40-binary superset, three
+independent corpora, and a 100-binary compiler matrix
+(Section~\ref{sec:validation}).
 
 \textbf{Frequency and Zipf.}
 We fit Zipf's law $f(v)\propto r(v)^{-\alpha}$ via OLS on log-log
@@ -184,9 +189,9 @@ conditional-entropy lower bound.
 A three-stage pipeline: MinHash signatures
 ($k{\in}\{3,4,5\}$, $m{=}128$ permutations), LSH at Jaccard thresholds
 $\tau{\in}\{0.70,0.90\}$, and Smith--Waterman alignment with normalised
-score $s{=}S/\min(|f_1|,|f_2|)$.  Pairs are classified Type 1
-($J{\geq}0.95$), Type 2 ($J{\geq}0.70$), Type 3 ($J{\geq}0.50$); families
-are connected components.
+score $s{=}S/\min(|f_1|,|f_2|)$.  Pairs fall into mutually exclusive
+Jaccard bands: Type 1 ($J{\geq}0.95$), Type 2 ($0.95{>}J{\geq}0.70$),
+Type 3 ($0.70{>}J{\geq}0.50$); families are connected components.
 
 % =============================================================================
 \section{Results}
@@ -225,7 +230,11 @@ properly weighted by counts, lies closer to natural-language
 $\alpha{\approx}1$.  The KS statistic exceeds the asymptotic critical
 value at $n{=}281$ ($0.081$), so a strict truncated power law is
 rejected; the distribution is best characterised as heavy-tailed with
-approximately Zipfian concentration (Fig.~\ref{fig:zipf}).
+approximately Zipfian concentration (Fig.~\ref{fig:zipf}).  A residual
+analysis confirms the high OLS $R^2$ is misleading: the log-residuals are
+non-normal (Shapiro--Wilk $p{<}10^{-14}$) and systematically curved
+(Durbin--Watson $0.02$), with both head and tail ranks falling below the
+fitted line; we therefore report the count-weighted MLE exponent.
 
 \begin{figure}[t]
   \centering

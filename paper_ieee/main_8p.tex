@@ -194,6 +194,20 @@ each instruction is retained, yielding $s{=}(o_1,\dots,o_N)$ over a
 shared vocabulary $\mathcal{V}$.  Functions are extracted separately to
 support per-function motif and positional analyses.
 
+The 15 smoke binaries are not a random draw but a stratified one: they
+span eight functional categories (text processing, compression, file
+management, shells, interpreters, networking, editors, developer tools)
+and three orders of magnitude in size ($3{,}450$--$777{,}060$
+instructions), so the corpus exercises diverse code-generation patterns
+rather than one program family.  Crucially, representativeness is
+\emph{tested} rather than assumed: every headline metric is replicated on
+the disjoint 40-binary coreutils-system superset, three independent
+corpora, and a 100-binary compiler matrix
+(Section~\ref{sec:validation}), where the corpus-level estimates move by
+${\leq}2\%$.  Per-binary tokens are abundant ($2.91$\,M instructions)
+but non-independent, so we treat $N{=}15$ as the effective sample size for
+corpus-level inference and report this conservatively throughout.
+
 \subsection{Frequency and Zipf}
 We fit Zipf's law $f(v)\propto r(v)^{-\alpha}$ via OLS on log-log
 coordinates and via MLE on the truncated discrete Zipf model
@@ -267,9 +281,10 @@ the six (threshold, $k$) configurations are merged.  This reduces the
 comparison budget from $O(N^2)$ to $O(NC)$ with $C{\ll}N$.
 \emph{Stage~3 (Smith--Waterman alignment):} each candidate undergoes
 local sequence alignment on opcode sequences, with normalised score
-$s{=}S/\min(|f_1|,|f_2|)$.  Pairs are classified Type 1
-($J{\geq}0.95$, exact/near-exact), Type 2 ($J{\geq}0.70$, high overlap),
-Type 3 ($J{\geq}0.50$, gapped/structurally similar); families are
+$s{=}S/\min(|f_1|,|f_2|)$.  Pairs are assigned to mutually exclusive
+Jaccard bands: Type 1 ($J{\geq}0.95$, exact/near-exact),
+Type 2 ($0.95{>}J{\geq}0.70$, high overlap),
+Type 3 ($0.70{>}J{\geq}0.50$, gapped/structurally similar); families are
 connected components on the clone similarity graph.  For each family we
 compute a \emph{conserved core} (intersection of member opcode sets), a
 \emph{divergence score} ($1{-}\bar{J}$), and a \emph{cross-binary} flag.
@@ -314,6 +329,19 @@ value at $n{=}281$ ($0.081$), so a strict truncated power law is
 rejected; the distribution is best characterised as heavy-tailed with
 approximately Zipfian concentration (Fig.~\ref{fig:zipf}).
 
+A residual analysis of the OLS fit shows its high $R^2$ is misleading.
+The log-frequency residuals are strongly non-normal
+(Shapiro--Wilk $W{=}0.86$, $p{<}10^{-14}$) and highly autocorrelated
+along rank (Durbin--Watson $0.02$, far from the no-structure value of
+$2$): the top-decile and bottom-decile ranks both fall systematically
+\emph{below} the fitted line (mean residual ${-}0.38$ and ${-}0.43$
+decades) while only mid-ranks are well fit, exactly the head/tail
+deviation visible in Fig.~\ref{fig:zipf}.  The residuals therefore
+reflect structural curvature rather than random scatter, so $R^2$ does
+not validate a power law here.  This is why we treat the count-weighted
+$\hat{\alpha}_{\mathrm{MLE}}$---which is insensitive to the unweighted
+tail---as the reportable exponent throughout.
+
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{plots/zipf_distribution.png}
@@ -353,10 +381,18 @@ unigram skew accounts for $0.306$ ($69\%$) and sequential order for
 $0.139$ ($31\%$).  LZ78 normalised complexity is $630$ (median, real)
 vs.\ $45{,}187$ (shuffled) and $87{,}881$ (random)---the relative
 separation, not absolute scale, is the diagnostic since $\tilde{c}$
-scales with $N/\log^2 N$.  Compression ratio shows a weak negative
-correlation with binary size ($r{=}{-}0.28$): larger binaries are
-marginally more compressible, consistent with greater repetition of
-library-call patterns.
+scales with $N/\log^2 N$.  Compression ratio decreases with binary size,
+but the effect's strength depends on the compressor ($N{=}15$).  Under
+\lzma{} the association is strong and significant
+(Spearman $\rho{=}{-}0.87$, $p{<}0.001$; Pearson $r{=}{-}0.67$,
+$p{=}0.007$); under the smaller-window \zlib{} it is weak and not
+significant (Spearman $\rho{=}{-}0.40$; Pearson $r{=}{-}0.36$,
+$p{=}0.19$).  The significant \lzma{} trend indicates larger binaries are
+more compressible, consistent with greater repetition of library-call
+patterns; the \zlib{} estimate points the same direction but is
+underpowered at $N{=}15$.  We prefer Spearman's $\rho$ here because
+binary size spans three orders of magnitude and the relationship is
+monotonic rather than linear.
 
 \begin{table}[t]
 \centering
@@ -447,7 +483,9 @@ stochastically closer than between
 Because pairwise distances sharing a binary are not independent, MW
 p-values are anti-conservative; permutation tests
 ($10{,}000$ label permutations) confirm significance under both
-compressors.  The absolute gap is small (mean within $0.972$ vs.\ between
+compressors.
+
+The absolute gap is small (mean within $0.972$ vs.\ between
 $0.992$ under \zlib{}: $13.8\%$ of the between-group baseline), so we
 interpret NCD as a weak but significant continuous signal, not a basis
 for hard clustering of heterogeneous corpora.
@@ -641,9 +679,9 @@ is the standard ABI prologue.
 \midrule
 Functions in any clone family               & 352 (5.8\%) \\
 Confirmed clone pairs                       & 537 \\
-\quad Type 1 (exact, $J{\geq}0.95$)         & 342 (63.7\%) \\
-\quad Type 2 (high overlap, $J{\geq}0.70$)  & 127 (23.6\%) \\
-\quad Type 3 (gapped, $J{\geq}0.50$)        & 68  (12.7\%) \\
+\quad Type 1 (exact, $J{\geq}0.95$)               & 342 (63.7\%) \\
+\quad Type 2 (high overlap, $0.95{>}J{\geq}0.70$) & 127 (23.6\%) \\
+\quad Type 3 (gapped, $0.70{>}J{\geq}0.50$)       & 68  (12.7\%) \\
 Clone families                              & 117 \\
 \quad Cross-binary                          & 4   \\
 Largest family (members)                    & 14  \\
