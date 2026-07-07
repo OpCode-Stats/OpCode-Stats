@@ -1,0 +1,673 @@
+# OpenACR ReadStrptrMaybe family subset (8 of 77) -- regression fixture
+# fixture: objdump -dl --no-show-raw-insn function blocks
+00000000000fb010 <_ZN3dev23Targdep_ReadStrptrMaybeERNS_7TargdepEN4algo6aryptrIcEE>:
+_ZN3dev23Targdep_ReadStrptrMaybeERNS_7TargdepEN4algo6aryptrIcEE():
+   fb010:	endbr64
+   fb014:	push   r15
+   fb016:	mov    r15,rdi
+   fb019:	push   r14
+   fb01b:	push   r13
+   fb01d:	push   r12
+   fb01f:	push   rbp
+   fb020:	push   rbx
+   fb021:	sub    rsp,0x68
+   fb025:	mov    QWORD PTR [rsp],rsi
+   fb029:	mov    r13,rsp
+   fb02c:	lea    rsi,[rip+0x2fd2d]        # 12ad60 <_fini+0xb8f8>
+   fb033:	mov    QWORD PTR [rsp+0x8],rdx
+   fb038:	mov    rdi,r13
+   fb03b:	mov    edx,0xb
+   fb040:	mov    rax,QWORD PTR fs:0x28
+   fb049:	mov    QWORD PTR [rsp+0x58],rax
+   fb04e:	xor    eax,eax
+   fb050:	call   11d020 <_ZN4algo12StripTypeTagERNS_6aryptrIcEES1_>
+   fb055:	mov    ebx,eax
+   fb057:	test   al,al
+   fb059:	je     fb110 <_ZN3dev23Targdep_ReadStrptrMaybeERNS_7TargdepEN4algo6aryptrIcEE+0x100>
+   fb05f:	lea    r13,[rsp+0x10]
+   fb064:	mov    rdi,r13
+   fb067:	call   11d370 <_ZN4algo9Attr_cursC1Ev>
+   fb06c:	mov    rsi,QWORD PTR [rsp]
+   fb070:	mov    rdx,QWORD PTR [rsp+0x8]
+   fb075:	mov    rdi,r13
+   fb078:	call   11d450 <_ZN4algo15Attr_curs_ResetERNS_9Attr_cursENS_6aryptrIcEE>
+   fb07d:	movabs r14,0xffffffff00000000
+   fb087:	jmp    fb098 <_ZN3dev23Targdep_ReadStrptrMaybeERNS_7TargdepEN4algo6aryptrIcEE+0x88>
+   fb089:	nop    DWORD PTR [rax+0x0]
+   fb090:	mov    rdi,r13
+   fb093:	call   11d550 <_ZN4algo14Attr_curs_NextERNS_9Attr_cursE>
+   fb098:	cmp    BYTE PTR [rsp+0x48],0x0
+   fb09d:	je     fb0d8 <_ZN3dev23Targdep_ReadStrptrMaybeERNS_7TargdepEN4algo6aryptrIcEE+0xc8>
+   fb09f:	test   bl,bl
+   fb0a1:	je     fb090 <_ZN3dev23Targdep_ReadStrptrMaybeERNS_7TargdepEN4algo6aryptrIcEE+0x80>
+   fb0a3:	mov    eax,DWORD PTR [rsp+0x40]
+   fb0a7:	and    r12,r14
+   fb0aa:	and    rbp,r14
+   fb0ad:	mov    rcx,QWORD PTR [rsp+0x38]
+   fb0b2:	mov    rsi,QWORD PTR [rsp+0x28]
+   fb0b7:	mov    rdi,r15
+   fb0ba:	or     r12,rax
+   fb0bd:	mov    eax,DWORD PTR [rsp+0x30]
+   fb0c1:	mov    r8,r12
+   fb0c4:	or     rbp,rax
+   fb0c7:	mov    rdx,rbp
+   fb0ca:	call   faee0 <_ZN3dev22Targdep_ReadFieldMaybeERNS_7TargdepEN4algo6aryptrIcEES4_>
+   fb0cf:	mov    ebx,eax
+   fb0d1:	jmp    fb090 <_ZN3dev23Targdep_ReadStrptrMaybeERNS_7TargdepEN4algo6aryptrIcEE+0x80>
+   fb0d3:	nop    DWORD PTR [rax+rax*1+0x0]
+   fb0d8:	lea    rdi,[rsp+0x38]
+   fb0dd:	call   11be10 <_ZN4algo7tempstrD1Ev>
+   fb0e2:	lea    rdi,[rsp+0x28]
+   fb0e7:	call   11be10 <_ZN4algo7tempstrD1Ev>
+   fb0ec:	mov    rax,QWORD PTR [rsp+0x58]
+   fb0f1:	sub    rax,QWORD PTR fs:0x28
+   fb0fa:	jne    fb12b <_ZN3dev23Targdep_ReadStrptrMaybeERNS_7TargdepEN4algo6aryptrIcEE+0x11b>
+   fb0fc:	add    rsp,0x68
+   fb100:	mov    eax,ebx
+   fb102:	pop    rbx
+   fb103:	pop    rbp
+   fb104:	pop    r12
+   fb106:	pop    r13
+   fb108:	pop    r14
+   fb10a:	pop    r15
+   fb10c:	ret
+   fb10d:	nop    DWORD PTR [rax]
+   fb110:	lea    rsi,[rip+0x30a13]        # 12bb2a <_fini+0xc6c2>
+   fb117:	mov    edx,0xb
+   fb11c:	mov    rdi,r13
+   fb11f:	call   11d020 <_ZN4algo12StripTypeTagERNS_6aryptrIcEES1_>
+   fb124:	mov    ebx,eax
+   fb126:	jmp    fb05f <_ZN3dev23Targdep_ReadStrptrMaybeERNS_7TargdepEN4algo6aryptrIcEE+0x4f>
+   fb12b:	call   a5a0 <__stack_chk_fail@plt>
+   fb130:	endbr64
+   fb134:	mov    rbx,rax
+   fb137:	jmp    103db <_ZN3dev23Targdep_ReadStrptrMaybeERNS_7TargdepEN4algo6aryptrIcEE.cold>
+   fb13c:	nop    DWORD PTR [rax+0x0]
+
+00000000000fd9f0 <_ZN6dmmeta24Argvtype_ReadStrptrMaybeERNS_8ArgvtypeEN4algo6aryptrIcEE>:
+_ZN6dmmeta24Argvtype_ReadStrptrMaybeERNS_8ArgvtypeEN4algo6aryptrIcEE():
+   fd9f0:	endbr64
+   fd9f4:	push   r15
+   fd9f6:	mov    r15,rdi
+   fd9f9:	push   r14
+   fd9fb:	push   r13
+   fd9fd:	push   r12
+   fd9ff:	push   rbp
+   fda00:	push   rbx
+   fda01:	sub    rsp,0x68
+   fda05:	mov    QWORD PTR [rsp],rsi
+   fda09:	mov    r13,rsp
+   fda0c:	lea    rsi,[rip+0x2d323]        # 12ad36 <_fini+0xb8ce>
+   fda13:	mov    QWORD PTR [rsp+0x8],rdx
+   fda18:	mov    rdi,r13
+   fda1b:	mov    edx,0xf
+   fda20:	mov    rax,QWORD PTR fs:0x28
+   fda29:	mov    QWORD PTR [rsp+0x58],rax
+   fda2e:	xor    eax,eax
+   fda30:	call   11d020 <_ZN4algo12StripTypeTagERNS_6aryptrIcEES1_>
+   fda35:	mov    ebx,eax
+   fda37:	test   al,al
+   fda39:	je     fdaf0 <_ZN6dmmeta24Argvtype_ReadStrptrMaybeERNS_8ArgvtypeEN4algo6aryptrIcEE+0x100>
+   fda3f:	lea    r13,[rsp+0x10]
+   fda44:	mov    rdi,r13
+   fda47:	call   11d370 <_ZN4algo9Attr_cursC1Ev>
+   fda4c:	mov    rsi,QWORD PTR [rsp]
+   fda50:	mov    rdx,QWORD PTR [rsp+0x8]
+   fda55:	mov    rdi,r13
+   fda58:	call   11d450 <_ZN4algo15Attr_curs_ResetERNS_9Attr_cursENS_6aryptrIcEE>
+   fda5d:	movabs r14,0xffffffff00000000
+   fda67:	jmp    fda78 <_ZN6dmmeta24Argvtype_ReadStrptrMaybeERNS_8ArgvtypeEN4algo6aryptrIcEE+0x88>
+   fda69:	nop    DWORD PTR [rax+0x0]
+   fda70:	mov    rdi,r13
+   fda73:	call   11d550 <_ZN4algo14Attr_curs_NextERNS_9Attr_cursE>
+   fda78:	cmp    BYTE PTR [rsp+0x48],0x0
+   fda7d:	je     fdab8 <_ZN6dmmeta24Argvtype_ReadStrptrMaybeERNS_8ArgvtypeEN4algo6aryptrIcEE+0xc8>
+   fda7f:	test   bl,bl
+   fda81:	je     fda70 <_ZN6dmmeta24Argvtype_ReadStrptrMaybeERNS_8ArgvtypeEN4algo6aryptrIcEE+0x80>
+   fda83:	mov    eax,DWORD PTR [rsp+0x40]
+   fda87:	and    r12,r14
+   fda8a:	and    rbp,r14
+   fda8d:	mov    rcx,QWORD PTR [rsp+0x38]
+   fda92:	mov    rsi,QWORD PTR [rsp+0x28]
+   fda97:	mov    rdi,r15
+   fda9a:	or     r12,rax
+   fda9d:	mov    eax,DWORD PTR [rsp+0x30]
+   fdaa1:	mov    r8,r12
+   fdaa4:	or     rbp,rax
+   fdaa7:	mov    rdx,rbp
+   fdaaa:	call   fd8d0 <_ZN6dmmeta23Argvtype_ReadFieldMaybeERNS_8ArgvtypeEN4algo6aryptrIcEES4_>
+   fdaaf:	mov    ebx,eax
+   fdab1:	jmp    fda70 <_ZN6dmmeta24Argvtype_ReadStrptrMaybeERNS_8ArgvtypeEN4algo6aryptrIcEE+0x80>
+   fdab3:	nop    DWORD PTR [rax+rax*1+0x0]
+   fdab8:	lea    rdi,[rsp+0x38]
+   fdabd:	call   11be10 <_ZN4algo7tempstrD1Ev>
+   fdac2:	lea    rdi,[rsp+0x28]
+   fdac7:	call   11be10 <_ZN4algo7tempstrD1Ev>
+   fdacc:	mov    rax,QWORD PTR [rsp+0x58]
+   fdad1:	sub    rax,QWORD PTR fs:0x28
+   fdada:	jne    fdb0b <_ZN6dmmeta24Argvtype_ReadStrptrMaybeERNS_8ArgvtypeEN4algo6aryptrIcEE+0x11b>
+   fdadc:	add    rsp,0x68
+   fdae0:	mov    eax,ebx
+   fdae2:	pop    rbx
+   fdae3:	pop    rbp
+   fdae4:	pop    r12
+   fdae6:	pop    r13
+   fdae8:	pop    r14
+   fdaea:	pop    r15
+   fdaec:	ret
+   fdaed:	nop    DWORD PTR [rax]
+   fdaf0:	lea    rsi,[rip+0x2e396]        # 12be8d <_fini+0xca25>
+   fdaf7:	mov    edx,0xf
+   fdafc:	mov    rdi,r13
+   fdaff:	call   11d020 <_ZN4algo12StripTypeTagERNS_6aryptrIcEES1_>
+   fdb04:	mov    ebx,eax
+   fdb06:	jmp    fda3f <_ZN6dmmeta24Argvtype_ReadStrptrMaybeERNS_8ArgvtypeEN4algo6aryptrIcEE+0x4f>
+   fdb0b:	call   a5a0 <__stack_chk_fail@plt>
+   fdb10:	endbr64
+   fdb14:	mov    rbx,rax
+   fdb17:	jmp    1051e <_ZN6dmmeta24Argvtype_ReadStrptrMaybeERNS_8ArgvtypeEN4algo6aryptrIcEE.cold>
+   fdb1c:	nop    DWORD PTR [rax+0x0]
+
+00000000000fdc80 <_ZN6dmmeta22Bitfld_ReadStrptrMaybeERNS_6BitfldEN4algo6aryptrIcEE>:
+_ZN6dmmeta22Bitfld_ReadStrptrMaybeERNS_6BitfldEN4algo6aryptrIcEE():
+   fdc80:	endbr64
+   fdc84:	push   r15
+   fdc86:	mov    r15,rdi
+   fdc89:	push   r14
+   fdc8b:	push   r13
+   fdc8d:	push   r12
+   fdc8f:	push   rbp
+   fdc90:	push   rbx
+   fdc91:	sub    rsp,0x68
+   fdc95:	mov    QWORD PTR [rsp],rsi
+   fdc99:	mov    r13,rsp
+   fdc9c:	lea    rsi,[rip+0x2d085]        # 12ad28 <_fini+0xb8c0>
+   fdca3:	mov    QWORD PTR [rsp+0x8],rdx
+   fdca8:	mov    rdi,r13
+   fdcab:	mov    edx,0xd
+   fdcb0:	mov    rax,QWORD PTR fs:0x28
+   fdcb9:	mov    QWORD PTR [rsp+0x58],rax
+   fdcbe:	xor    eax,eax
+   fdcc0:	call   11d020 <_ZN4algo12StripTypeTagERNS_6aryptrIcEES1_>
+   fdcc5:	mov    ebx,eax
+   fdcc7:	test   al,al
+   fdcc9:	je     fdd80 <_ZN6dmmeta22Bitfld_ReadStrptrMaybeERNS_6BitfldEN4algo6aryptrIcEE+0x100>
+   fdccf:	lea    r13,[rsp+0x10]
+   fdcd4:	mov    rdi,r13
+   fdcd7:	call   11d370 <_ZN4algo9Attr_cursC1Ev>
+   fdcdc:	mov    rsi,QWORD PTR [rsp]
+   fdce0:	mov    rdx,QWORD PTR [rsp+0x8]
+   fdce5:	mov    rdi,r13
+   fdce8:	call   11d450 <_ZN4algo15Attr_curs_ResetERNS_9Attr_cursENS_6aryptrIcEE>
+   fdced:	movabs r14,0xffffffff00000000
+   fdcf7:	jmp    fdd08 <_ZN6dmmeta22Bitfld_ReadStrptrMaybeERNS_6BitfldEN4algo6aryptrIcEE+0x88>
+   fdcf9:	nop    DWORD PTR [rax+0x0]
+   fdd00:	mov    rdi,r13
+   fdd03:	call   11d550 <_ZN4algo14Attr_curs_NextERNS_9Attr_cursE>
+   fdd08:	cmp    BYTE PTR [rsp+0x48],0x0
+   fdd0d:	je     fdd48 <_ZN6dmmeta22Bitfld_ReadStrptrMaybeERNS_6BitfldEN4algo6aryptrIcEE+0xc8>
+   fdd0f:	test   bl,bl
+   fdd11:	je     fdd00 <_ZN6dmmeta22Bitfld_ReadStrptrMaybeERNS_6BitfldEN4algo6aryptrIcEE+0x80>
+   fdd13:	mov    eax,DWORD PTR [rsp+0x40]
+   fdd17:	and    r12,r14
+   fdd1a:	and    rbp,r14
+   fdd1d:	mov    rcx,QWORD PTR [rsp+0x38]
+   fdd22:	mov    rsi,QWORD PTR [rsp+0x28]
+   fdd27:	mov    rdi,r15
+   fdd2a:	or     r12,rax
+   fdd2d:	mov    eax,DWORD PTR [rsp+0x30]
+   fdd31:	mov    r8,r12
+   fdd34:	or     rbp,rax
+   fdd37:	mov    rdx,rbp
+   fdd3a:	call   fdb20 <_ZN6dmmeta21Bitfld_ReadFieldMaybeERNS_6BitfldEN4algo6aryptrIcEES4_>
+   fdd3f:	mov    ebx,eax
+   fdd41:	jmp    fdd00 <_ZN6dmmeta22Bitfld_ReadStrptrMaybeERNS_6BitfldEN4algo6aryptrIcEE+0x80>
+   fdd43:	nop    DWORD PTR [rax+rax*1+0x0]
+   fdd48:	lea    rdi,[rsp+0x38]
+   fdd4d:	call   11be10 <_ZN4algo7tempstrD1Ev>
+   fdd52:	lea    rdi,[rsp+0x28]
+   fdd57:	call   11be10 <_ZN4algo7tempstrD1Ev>
+   fdd5c:	mov    rax,QWORD PTR [rsp+0x58]
+   fdd61:	sub    rax,QWORD PTR fs:0x28
+   fdd6a:	jne    fdd9b <_ZN6dmmeta22Bitfld_ReadStrptrMaybeERNS_6BitfldEN4algo6aryptrIcEE+0x11b>
+   fdd6c:	add    rsp,0x68
+   fdd70:	mov    eax,ebx
+   fdd72:	pop    rbx
+   fdd73:	pop    rbp
+   fdd74:	pop    r12
+   fdd76:	pop    r13
+   fdd78:	pop    r14
+   fdd7a:	pop    r15
+   fdd7c:	ret
+   fdd7d:	nop    DWORD PTR [rax]
+   fdd80:	lea    rsi,[rip+0x2e116]        # 12be9d <_fini+0xca35>
+   fdd87:	mov    edx,0xd
+   fdd8c:	mov    rdi,r13
+   fdd8f:	call   11d020 <_ZN4algo12StripTypeTagERNS_6aryptrIcEES1_>
+   fdd94:	mov    ebx,eax
+   fdd96:	jmp    fdccf <_ZN6dmmeta22Bitfld_ReadStrptrMaybeERNS_6BitfldEN4algo6aryptrIcEE+0x4f>
+   fdd9b:	call   a5a0 <__stack_chk_fail@plt>
+   fdda0:	endbr64
+   fdda4:	mov    rbx,rax
+   fdda7:	jmp    1054f <_ZN6dmmeta22Bitfld_ReadStrptrMaybeERNS_6BitfldEN4algo6aryptrIcEE.cold>
+   fddac:	nop    DWORD PTR [rax+0x0]
+
+00000000000fdee0 <_ZN6dmmeta22Cafter_ReadStrptrMaybeERNS_6CafterEN4algo6aryptrIcEE>:
+_ZN6dmmeta22Cafter_ReadStrptrMaybeERNS_6CafterEN4algo6aryptrIcEE():
+   fdee0:	endbr64
+   fdee4:	push   r15
+   fdee6:	mov    r15,rdi
+   fdee9:	push   r14
+   fdeeb:	push   r13
+   fdeed:	push   r12
+   fdeef:	push   rbp
+   fdef0:	push   rbx
+   fdef1:	sub    rsp,0x68
+   fdef5:	mov    QWORD PTR [rsp],rsi
+   fdef9:	mov    r13,rsp
+   fdefc:	lea    rsi,[rip+0x2ce17]        # 12ad1a <_fini+0xb8b2>
+   fdf03:	mov    QWORD PTR [rsp+0x8],rdx
+   fdf08:	mov    rdi,r13
+   fdf0b:	mov    edx,0xd
+   fdf10:	mov    rax,QWORD PTR fs:0x28
+   fdf19:	mov    QWORD PTR [rsp+0x58],rax
+   fdf1e:	xor    eax,eax
+   fdf20:	call   11d020 <_ZN4algo12StripTypeTagERNS_6aryptrIcEES1_>
+   fdf25:	mov    ebx,eax
+   fdf27:	test   al,al
+   fdf29:	je     fdfe0 <_ZN6dmmeta22Cafter_ReadStrptrMaybeERNS_6CafterEN4algo6aryptrIcEE+0x100>
+   fdf2f:	lea    r13,[rsp+0x10]
+   fdf34:	mov    rdi,r13
+   fdf37:	call   11d370 <_ZN4algo9Attr_cursC1Ev>
+   fdf3c:	mov    rsi,QWORD PTR [rsp]
+   fdf40:	mov    rdx,QWORD PTR [rsp+0x8]
+   fdf45:	mov    rdi,r13
+   fdf48:	call   11d450 <_ZN4algo15Attr_curs_ResetERNS_9Attr_cursENS_6aryptrIcEE>
+   fdf4d:	movabs r14,0xffffffff00000000
+   fdf57:	jmp    fdf68 <_ZN6dmmeta22Cafter_ReadStrptrMaybeERNS_6CafterEN4algo6aryptrIcEE+0x88>
+   fdf59:	nop    DWORD PTR [rax+0x0]
+   fdf60:	mov    rdi,r13
+   fdf63:	call   11d550 <_ZN4algo14Attr_curs_NextERNS_9Attr_cursE>
+   fdf68:	cmp    BYTE PTR [rsp+0x48],0x0
+   fdf6d:	je     fdfa8 <_ZN6dmmeta22Cafter_ReadStrptrMaybeERNS_6CafterEN4algo6aryptrIcEE+0xc8>
+   fdf6f:	test   bl,bl
+   fdf71:	je     fdf60 <_ZN6dmmeta22Cafter_ReadStrptrMaybeERNS_6CafterEN4algo6aryptrIcEE+0x80>
+   fdf73:	mov    eax,DWORD PTR [rsp+0x40]
+   fdf77:	and    r12,r14
+   fdf7a:	and    rbp,r14
+   fdf7d:	mov    rcx,QWORD PTR [rsp+0x38]
+   fdf82:	mov    rsi,QWORD PTR [rsp+0x28]
+   fdf87:	mov    rdi,r15
+   fdf8a:	or     r12,rax
+   fdf8d:	mov    eax,DWORD PTR [rsp+0x30]
+   fdf91:	mov    r8,r12
+   fdf94:	or     rbp,rax
+   fdf97:	mov    rdx,rbp
+   fdf9a:	call   fddb0 <_ZN6dmmeta21Cafter_ReadFieldMaybeERNS_6CafterEN4algo6aryptrIcEES4_>
+   fdf9f:	mov    ebx,eax
+   fdfa1:	jmp    fdf60 <_ZN6dmmeta22Cafter_ReadStrptrMaybeERNS_6CafterEN4algo6aryptrIcEE+0x80>
+   fdfa3:	nop    DWORD PTR [rax+rax*1+0x0]
+   fdfa8:	lea    rdi,[rsp+0x38]
+   fdfad:	call   11be10 <_ZN4algo7tempstrD1Ev>
+   fdfb2:	lea    rdi,[rsp+0x28]
+   fdfb7:	call   11be10 <_ZN4algo7tempstrD1Ev>
+   fdfbc:	mov    rax,QWORD PTR [rsp+0x58]
+   fdfc1:	sub    rax,QWORD PTR fs:0x28
+   fdfca:	jne    fdffb <_ZN6dmmeta22Cafter_ReadStrptrMaybeERNS_6CafterEN4algo6aryptrIcEE+0x11b>
+   fdfcc:	add    rsp,0x68
+   fdfd0:	mov    eax,ebx
+   fdfd2:	pop    rbx
+   fdfd3:	pop    rbp
+   fdfd4:	pop    r12
+   fdfd6:	pop    r13
+   fdfd8:	pop    r14
+   fdfda:	pop    r15
+   fdfdc:	ret
+   fdfdd:	nop    DWORD PTR [rax]
+   fdfe0:	lea    rsi,[rip+0x2dec4]        # 12beab <_fini+0xca43>
+   fdfe7:	mov    edx,0xd
+   fdfec:	mov    rdi,r13
+   fdfef:	call   11d020 <_ZN4algo12StripTypeTagERNS_6aryptrIcEES1_>
+   fdff4:	mov    ebx,eax
+   fdff6:	jmp    fdf2f <_ZN6dmmeta22Cafter_ReadStrptrMaybeERNS_6CafterEN4algo6aryptrIcEE+0x4f>
+   fdffb:	call   a5a0 <__stack_chk_fail@plt>
+   fe000:	endbr64
+   fe004:	mov    rbx,rax
+   fe007:	jmp    10580 <_ZN6dmmeta22Cafter_ReadStrptrMaybeERNS_6CafterEN4algo6aryptrIcEE.cold>
+   fe00c:	nop    DWORD PTR [rax+0x0]
+
+00000000000fe180 <_ZN6dmmeta20Ccmp_ReadStrptrMaybeERNS_4CcmpEN4algo6aryptrIcEE>:
+_ZN6dmmeta20Ccmp_ReadStrptrMaybeERNS_4CcmpEN4algo6aryptrIcEE():
+   fe180:	endbr64
+   fe184:	push   r15
+   fe186:	mov    r15,rdi
+   fe189:	push   r14
+   fe18b:	push   r13
+   fe18d:	push   r12
+   fe18f:	push   rbp
+   fe190:	push   rbx
+   fe191:	sub    rsp,0x68
+   fe195:	mov    QWORD PTR [rsp],rsi
+   fe199:	mov    r13,rsp
+   fe19c:	lea    rsi,[rip+0x2cb6b]        # 12ad0e <_fini+0xb8a6>
+   fe1a3:	mov    QWORD PTR [rsp+0x8],rdx
+   fe1a8:	mov    rdi,r13
+   fe1ab:	mov    edx,0xb
+   fe1b0:	mov    rax,QWORD PTR fs:0x28
+   fe1b9:	mov    QWORD PTR [rsp+0x58],rax
+   fe1be:	xor    eax,eax
+   fe1c0:	call   11d020 <_ZN4algo12StripTypeTagERNS_6aryptrIcEES1_>
+   fe1c5:	mov    ebx,eax
+   fe1c7:	test   al,al
+   fe1c9:	je     fe280 <_ZN6dmmeta20Ccmp_ReadStrptrMaybeERNS_4CcmpEN4algo6aryptrIcEE+0x100>
+   fe1cf:	lea    r13,[rsp+0x10]
+   fe1d4:	mov    rdi,r13
+   fe1d7:	call   11d370 <_ZN4algo9Attr_cursC1Ev>
+   fe1dc:	mov    rsi,QWORD PTR [rsp]
+   fe1e0:	mov    rdx,QWORD PTR [rsp+0x8]
+   fe1e5:	mov    rdi,r13
+   fe1e8:	call   11d450 <_ZN4algo15Attr_curs_ResetERNS_9Attr_cursENS_6aryptrIcEE>
+   fe1ed:	movabs r14,0xffffffff00000000
+   fe1f7:	jmp    fe208 <_ZN6dmmeta20Ccmp_ReadStrptrMaybeERNS_4CcmpEN4algo6aryptrIcEE+0x88>
+   fe1f9:	nop    DWORD PTR [rax+0x0]
+   fe200:	mov    rdi,r13
+   fe203:	call   11d550 <_ZN4algo14Attr_curs_NextERNS_9Attr_cursE>
+   fe208:	cmp    BYTE PTR [rsp+0x48],0x0
+   fe20d:	je     fe248 <_ZN6dmmeta20Ccmp_ReadStrptrMaybeERNS_4CcmpEN4algo6aryptrIcEE+0xc8>
+   fe20f:	test   bl,bl
+   fe211:	je     fe200 <_ZN6dmmeta20Ccmp_ReadStrptrMaybeERNS_4CcmpEN4algo6aryptrIcEE+0x80>
+   fe213:	mov    eax,DWORD PTR [rsp+0x40]
+   fe217:	and    r12,r14
+   fe21a:	and    rbp,r14
+   fe21d:	mov    rcx,QWORD PTR [rsp+0x38]
+   fe222:	mov    rsi,QWORD PTR [rsp+0x28]
+   fe227:	mov    rdi,r15
+   fe22a:	or     r12,rax
+   fe22d:	mov    eax,DWORD PTR [rsp+0x30]
+   fe231:	mov    r8,r12
+   fe234:	or     rbp,rax
+   fe237:	mov    rdx,rbp
+   fe23a:	call   fe010 <_ZN6dmmeta19Ccmp_ReadFieldMaybeERNS_4CcmpEN4algo6aryptrIcEES4_>
+   fe23f:	mov    ebx,eax
+   fe241:	jmp    fe200 <_ZN6dmmeta20Ccmp_ReadStrptrMaybeERNS_4CcmpEN4algo6aryptrIcEE+0x80>
+   fe243:	nop    DWORD PTR [rax+rax*1+0x0]
+   fe248:	lea    rdi,[rsp+0x38]
+   fe24d:	call   11be10 <_ZN4algo7tempstrD1Ev>
+   fe252:	lea    rdi,[rsp+0x28]
+   fe257:	call   11be10 <_ZN4algo7tempstrD1Ev>
+   fe25c:	mov    rax,QWORD PTR [rsp+0x58]
+   fe261:	sub    rax,QWORD PTR fs:0x28
+   fe26a:	jne    fe29b <_ZN6dmmeta20Ccmp_ReadStrptrMaybeERNS_4CcmpEN4algo6aryptrIcEE+0x11b>
+   fe26c:	add    rsp,0x68
+   fe270:	mov    eax,ebx
+   fe272:	pop    rbx
+   fe273:	pop    rbp
+   fe274:	pop    r12
+   fe276:	pop    r13
+   fe278:	pop    r14
+   fe27a:	pop    r15
+   fe27c:	ret
+   fe27d:	nop    DWORD PTR [rax]
+   fe280:	lea    rsi,[rip+0x2dc32]        # 12beb9 <_fini+0xca51>
+   fe287:	mov    edx,0xb
+   fe28c:	mov    rdi,r13
+   fe28f:	call   11d020 <_ZN4algo12StripTypeTagERNS_6aryptrIcEES1_>
+   fe294:	mov    ebx,eax
+   fe296:	jmp    fe1cf <_ZN6dmmeta20Ccmp_ReadStrptrMaybeERNS_4CcmpEN4algo6aryptrIcEE+0x4f>
+   fe29b:	call   a5a0 <__stack_chk_fail@plt>
+   fe2a0:	endbr64
+   fe2a4:	mov    rbx,rax
+   fe2a7:	jmp    105b1 <_ZN6dmmeta20Ccmp_ReadStrptrMaybeERNS_4CcmpEN4algo6aryptrIcEE.cold>
+   fe2ac:	nop    DWORD PTR [rax+0x0]
+
+00000000000fe430 <_ZN6dmmeta21Cdflt_ReadStrptrMaybeERNS_5CdfltEN4algo6aryptrIcEE>:
+_ZN6dmmeta21Cdflt_ReadStrptrMaybeERNS_5CdfltEN4algo6aryptrIcEE():
+   fe430:	endbr64
+   fe434:	push   r15
+   fe436:	mov    r15,rdi
+   fe439:	push   r14
+   fe43b:	push   r13
+   fe43d:	push   r12
+   fe43f:	push   rbp
+   fe440:	push   rbx
+   fe441:	sub    rsp,0x68
+   fe445:	mov    QWORD PTR [rsp],rsi
+   fe449:	mov    r13,rsp
+   fe44c:	lea    rsi,[rip+0x2c8ae]        # 12ad01 <_fini+0xb899>
+   fe453:	mov    QWORD PTR [rsp+0x8],rdx
+   fe458:	mov    rdi,r13
+   fe45b:	mov    edx,0xc
+   fe460:	mov    rax,QWORD PTR fs:0x28
+   fe469:	mov    QWORD PTR [rsp+0x58],rax
+   fe46e:	xor    eax,eax
+   fe470:	call   11d020 <_ZN4algo12StripTypeTagERNS_6aryptrIcEES1_>
+   fe475:	mov    ebx,eax
+   fe477:	test   al,al
+   fe479:	je     fe530 <_ZN6dmmeta21Cdflt_ReadStrptrMaybeERNS_5CdfltEN4algo6aryptrIcEE+0x100>
+   fe47f:	lea    r13,[rsp+0x10]
+   fe484:	mov    rdi,r13
+   fe487:	call   11d370 <_ZN4algo9Attr_cursC1Ev>
+   fe48c:	mov    rsi,QWORD PTR [rsp]
+   fe490:	mov    rdx,QWORD PTR [rsp+0x8]
+   fe495:	mov    rdi,r13
+   fe498:	call   11d450 <_ZN4algo15Attr_curs_ResetERNS_9Attr_cursENS_6aryptrIcEE>
+   fe49d:	movabs r14,0xffffffff00000000
+   fe4a7:	jmp    fe4b8 <_ZN6dmmeta21Cdflt_ReadStrptrMaybeERNS_5CdfltEN4algo6aryptrIcEE+0x88>
+   fe4a9:	nop    DWORD PTR [rax+0x0]
+   fe4b0:	mov    rdi,r13
+   fe4b3:	call   11d550 <_ZN4algo14Attr_curs_NextERNS_9Attr_cursE>
+   fe4b8:	cmp    BYTE PTR [rsp+0x48],0x0
+   fe4bd:	je     fe4f8 <_ZN6dmmeta21Cdflt_ReadStrptrMaybeERNS_5CdfltEN4algo6aryptrIcEE+0xc8>
+   fe4bf:	test   bl,bl
+   fe4c1:	je     fe4b0 <_ZN6dmmeta21Cdflt_ReadStrptrMaybeERNS_5CdfltEN4algo6aryptrIcEE+0x80>
+   fe4c3:	mov    eax,DWORD PTR [rsp+0x40]
+   fe4c7:	and    r12,r14
+   fe4ca:	and    rbp,r14
+   fe4cd:	mov    rcx,QWORD PTR [rsp+0x38]
+   fe4d2:	mov    rsi,QWORD PTR [rsp+0x28]
+   fe4d7:	mov    rdi,r15
+   fe4da:	or     r12,rax
+   fe4dd:	mov    eax,DWORD PTR [rsp+0x30]
+   fe4e1:	mov    r8,r12
+   fe4e4:	or     rbp,rax
+   fe4e7:	mov    rdx,rbp
+   fe4ea:	call   fe2b0 <_ZN6dmmeta20Cdflt_ReadFieldMaybeERNS_5CdfltEN4algo6aryptrIcEES4_>
+   fe4ef:	mov    ebx,eax
+   fe4f1:	jmp    fe4b0 <_ZN6dmmeta21Cdflt_ReadStrptrMaybeERNS_5CdfltEN4algo6aryptrIcEE+0x80>
+   fe4f3:	nop    DWORD PTR [rax+rax*1+0x0]
+   fe4f8:	lea    rdi,[rsp+0x38]
+   fe4fd:	call   11be10 <_ZN4algo7tempstrD1Ev>
+   fe502:	lea    rdi,[rsp+0x28]
+   fe507:	call   11be10 <_ZN4algo7tempstrD1Ev>
+   fe50c:	mov    rax,QWORD PTR [rsp+0x58]
+   fe511:	sub    rax,QWORD PTR fs:0x28
+   fe51a:	jne    fe54b <_ZN6dmmeta21Cdflt_ReadStrptrMaybeERNS_5CdfltEN4algo6aryptrIcEE+0x11b>
+   fe51c:	add    rsp,0x68
+   fe520:	mov    eax,ebx
+   fe522:	pop    rbx
+   fe523:	pop    rbp
+   fe524:	pop    r12
+   fe526:	pop    r13
+   fe528:	pop    r14
+   fe52a:	pop    r15
+   fe52c:	ret
+   fe52d:	nop    DWORD PTR [rax]
+   fe530:	lea    rsi,[rip+0x2d98e]        # 12bec5 <_fini+0xca5d>
+   fe537:	mov    edx,0xc
+   fe53c:	mov    rdi,r13
+   fe53f:	call   11d020 <_ZN4algo12StripTypeTagERNS_6aryptrIcEES1_>
+   fe544:	mov    ebx,eax
+   fe546:	jmp    fe47f <_ZN6dmmeta21Cdflt_ReadStrptrMaybeERNS_5CdfltEN4algo6aryptrIcEE+0x4f>
+   fe54b:	call   a5a0 <__stack_chk_fail@plt>
+   fe550:	endbr64
+   fe554:	mov    rbx,rax
+   fe557:	jmp    105e2 <_ZN6dmmeta21Cdflt_ReadStrptrMaybeERNS_5CdfltEN4algo6aryptrIcEE.cold>
+   fe55c:	nop    DWORD PTR [rax+0x0]
+
+00000000000fe6a0 <_ZN6dmmeta23Cextern_ReadStrptrMaybeERNS_7CexternEN4algo6aryptrIcEE>:
+_ZN6dmmeta23Cextern_ReadStrptrMaybeERNS_7CexternEN4algo6aryptrIcEE():
+   fe6a0:	endbr64
+   fe6a4:	push   r15
+   fe6a6:	mov    r15,rdi
+   fe6a9:	push   r14
+   fe6ab:	push   r13
+   fe6ad:	push   r12
+   fe6af:	push   rbp
+   fe6b0:	push   rbx
+   fe6b1:	sub    rsp,0x68
+   fe6b5:	mov    QWORD PTR [rsp],rsi
+   fe6b9:	mov    r13,rsp
+   fe6bc:	lea    rsi,[rip+0x2c62f]        # 12acf2 <_fini+0xb88a>
+   fe6c3:	mov    QWORD PTR [rsp+0x8],rdx
+   fe6c8:	mov    rdi,r13
+   fe6cb:	mov    edx,0xe
+   fe6d0:	mov    rax,QWORD PTR fs:0x28
+   fe6d9:	mov    QWORD PTR [rsp+0x58],rax
+   fe6de:	xor    eax,eax
+   fe6e0:	call   11d020 <_ZN4algo12StripTypeTagERNS_6aryptrIcEES1_>
+   fe6e5:	mov    ebx,eax
+   fe6e7:	test   al,al
+   fe6e9:	je     fe7a0 <_ZN6dmmeta23Cextern_ReadStrptrMaybeERNS_7CexternEN4algo6aryptrIcEE+0x100>
+   fe6ef:	lea    r13,[rsp+0x10]
+   fe6f4:	mov    rdi,r13
+   fe6f7:	call   11d370 <_ZN4algo9Attr_cursC1Ev>
+   fe6fc:	mov    rsi,QWORD PTR [rsp]
+   fe700:	mov    rdx,QWORD PTR [rsp+0x8]
+   fe705:	mov    rdi,r13
+   fe708:	call   11d450 <_ZN4algo15Attr_curs_ResetERNS_9Attr_cursENS_6aryptrIcEE>
+   fe70d:	movabs r14,0xffffffff00000000
+   fe717:	jmp    fe728 <_ZN6dmmeta23Cextern_ReadStrptrMaybeERNS_7CexternEN4algo6aryptrIcEE+0x88>
+   fe719:	nop    DWORD PTR [rax+0x0]
+   fe720:	mov    rdi,r13
+   fe723:	call   11d550 <_ZN4algo14Attr_curs_NextERNS_9Attr_cursE>
+   fe728:	cmp    BYTE PTR [rsp+0x48],0x0
+   fe72d:	je     fe768 <_ZN6dmmeta23Cextern_ReadStrptrMaybeERNS_7CexternEN4algo6aryptrIcEE+0xc8>
+   fe72f:	test   bl,bl
+   fe731:	je     fe720 <_ZN6dmmeta23Cextern_ReadStrptrMaybeERNS_7CexternEN4algo6aryptrIcEE+0x80>
+   fe733:	mov    eax,DWORD PTR [rsp+0x40]
+   fe737:	and    r12,r14
+   fe73a:	and    rbp,r14
+   fe73d:	mov    rcx,QWORD PTR [rsp+0x38]
+   fe742:	mov    rsi,QWORD PTR [rsp+0x28]
+   fe747:	mov    rdi,r15
+   fe74a:	or     r12,rax
+   fe74d:	mov    eax,DWORD PTR [rsp+0x30]
+   fe751:	mov    r8,r12
+   fe754:	or     rbp,rax
+   fe757:	mov    rdx,rbp
+   fe75a:	call   fe560 <_ZN6dmmeta22Cextern_ReadFieldMaybeERNS_7CexternEN4algo6aryptrIcEES4_>
+   fe75f:	mov    ebx,eax
+   fe761:	jmp    fe720 <_ZN6dmmeta23Cextern_ReadStrptrMaybeERNS_7CexternEN4algo6aryptrIcEE+0x80>
+   fe763:	nop    DWORD PTR [rax+rax*1+0x0]
+   fe768:	lea    rdi,[rsp+0x38]
+   fe76d:	call   11be10 <_ZN4algo7tempstrD1Ev>
+   fe772:	lea    rdi,[rsp+0x28]
+   fe777:	call   11be10 <_ZN4algo7tempstrD1Ev>
+   fe77c:	mov    rax,QWORD PTR [rsp+0x58]
+   fe781:	sub    rax,QWORD PTR fs:0x28
+   fe78a:	jne    fe7bb <_ZN6dmmeta23Cextern_ReadStrptrMaybeERNS_7CexternEN4algo6aryptrIcEE+0x11b>
+   fe78c:	add    rsp,0x68
+   fe790:	mov    eax,ebx
+   fe792:	pop    rbx
+   fe793:	pop    rbp
+   fe794:	pop    r12
+   fe796:	pop    r13
+   fe798:	pop    r14
+   fe79a:	pop    r15
+   fe79c:	ret
+   fe79d:	nop    DWORD PTR [rax]
+   fe7a0:	lea    rsi,[rip+0x2d72b]        # 12bed2 <_fini+0xca6a>
+   fe7a7:	mov    edx,0xe
+   fe7ac:	mov    rdi,r13
+   fe7af:	call   11d020 <_ZN4algo12StripTypeTagERNS_6aryptrIcEES1_>
+   fe7b4:	mov    ebx,eax
+   fe7b6:	jmp    fe6ef <_ZN6dmmeta23Cextern_ReadStrptrMaybeERNS_7CexternEN4algo6aryptrIcEE+0x4f>
+   fe7bb:	call   a5a0 <__stack_chk_fail@plt>
+   fe7c0:	endbr64
+   fe7c4:	mov    rbx,rax
+   fe7c7:	jmp    10613 <_ZN6dmmeta23Cextern_ReadStrptrMaybeERNS_7CexternEN4algo6aryptrIcEE.cold>
+   fe7cc:	nop    DWORD PTR [rax+0x0]
+
+00000000000fe930 <_ZN6dmmeta21Cfast_ReadStrptrMaybeERNS_5CfastEN4algo6aryptrIcEE>:
+_ZN6dmmeta21Cfast_ReadStrptrMaybeERNS_5CfastEN4algo6aryptrIcEE():
+   fe930:	endbr64
+   fe934:	push   r15
+   fe936:	mov    r15,rdi
+   fe939:	push   r14
+   fe93b:	push   r13
+   fe93d:	push   r12
+   fe93f:	push   rbp
+   fe940:	push   rbx
+   fe941:	sub    rsp,0x68
+   fe945:	mov    QWORD PTR [rsp],rsi
+   fe949:	mov    r13,rsp
+   fe94c:	lea    rsi,[rip+0x2c392]        # 12ace5 <_fini+0xb87d>
+   fe953:	mov    QWORD PTR [rsp+0x8],rdx
+   fe958:	mov    rdi,r13
+   fe95b:	mov    edx,0xc
+   fe960:	mov    rax,QWORD PTR fs:0x28
+   fe969:	mov    QWORD PTR [rsp+0x58],rax
+   fe96e:	xor    eax,eax
+   fe970:	call   11d020 <_ZN4algo12StripTypeTagERNS_6aryptrIcEES1_>
+   fe975:	mov    ebx,eax
+   fe977:	test   al,al
+   fe979:	je     fea30 <_ZN6dmmeta21Cfast_ReadStrptrMaybeERNS_5CfastEN4algo6aryptrIcEE+0x100>
+   fe97f:	lea    r13,[rsp+0x10]
+   fe984:	mov    rdi,r13
+   fe987:	call   11d370 <_ZN4algo9Attr_cursC1Ev>
+   fe98c:	mov    rsi,QWORD PTR [rsp]
+   fe990:	mov    rdx,QWORD PTR [rsp+0x8]
+   fe995:	mov    rdi,r13
+   fe998:	call   11d450 <_ZN4algo15Attr_curs_ResetERNS_9Attr_cursENS_6aryptrIcEE>
+   fe99d:	movabs r14,0xffffffff00000000
+   fe9a7:	jmp    fe9b8 <_ZN6dmmeta21Cfast_ReadStrptrMaybeERNS_5CfastEN4algo6aryptrIcEE+0x88>
+   fe9a9:	nop    DWORD PTR [rax+0x0]
+   fe9b0:	mov    rdi,r13
+   fe9b3:	call   11d550 <_ZN4algo14Attr_curs_NextERNS_9Attr_cursE>
+   fe9b8:	cmp    BYTE PTR [rsp+0x48],0x0
+   fe9bd:	je     fe9f8 <_ZN6dmmeta21Cfast_ReadStrptrMaybeERNS_5CfastEN4algo6aryptrIcEE+0xc8>
+   fe9bf:	test   bl,bl
+   fe9c1:	je     fe9b0 <_ZN6dmmeta21Cfast_ReadStrptrMaybeERNS_5CfastEN4algo6aryptrIcEE+0x80>
+   fe9c3:	mov    eax,DWORD PTR [rsp+0x40]
+   fe9c7:	and    r12,r14
+   fe9ca:	and    rbp,r14
+   fe9cd:	mov    rcx,QWORD PTR [rsp+0x38]
+   fe9d2:	mov    rsi,QWORD PTR [rsp+0x28]
+   fe9d7:	mov    rdi,r15
+   fe9da:	or     r12,rax
+   fe9dd:	mov    eax,DWORD PTR [rsp+0x30]
+   fe9e1:	mov    r8,r12
+   fe9e4:	or     rbp,rax
+   fe9e7:	mov    rdx,rbp
+   fe9ea:	call   fe7d0 <_ZN6dmmeta20Cfast_ReadFieldMaybeERNS_5CfastEN4algo6aryptrIcEES4_>
+   fe9ef:	mov    ebx,eax
+   fe9f1:	jmp    fe9b0 <_ZN6dmmeta21Cfast_ReadStrptrMaybeERNS_5CfastEN4algo6aryptrIcEE+0x80>
+   fe9f3:	nop    DWORD PTR [rax+rax*1+0x0]
+   fe9f8:	lea    rdi,[rsp+0x38]
+   fe9fd:	call   11be10 <_ZN4algo7tempstrD1Ev>
+   fea02:	lea    rdi,[rsp+0x28]
+   fea07:	call   11be10 <_ZN4algo7tempstrD1Ev>
+   fea0c:	mov    rax,QWORD PTR [rsp+0x58]
+   fea11:	sub    rax,QWORD PTR fs:0x28
+   fea1a:	jne    fea4b <_ZN6dmmeta21Cfast_ReadStrptrMaybeERNS_5CfastEN4algo6aryptrIcEE+0x11b>
+   fea1c:	add    rsp,0x68
+   fea20:	mov    eax,ebx
+   fea22:	pop    rbx
+   fea23:	pop    rbp
+   fea24:	pop    r12
+   fea26:	pop    r13
+   fea28:	pop    r14
+   fea2a:	pop    r15
+   fea2c:	ret
+   fea2d:	nop    DWORD PTR [rax]
+   fea30:	lea    rsi,[rip+0x2d4aa]        # 12bee1 <_fini+0xca79>
+   fea37:	mov    edx,0xc
+   fea3c:	mov    rdi,r13
+   fea3f:	call   11d020 <_ZN4algo12StripTypeTagERNS_6aryptrIcEES1_>
+   fea44:	mov    ebx,eax
+   fea46:	jmp    fe97f <_ZN6dmmeta21Cfast_ReadStrptrMaybeERNS_5CfastEN4algo6aryptrIcEE+0x4f>
+   fea4b:	call   a5a0 <__stack_chk_fail@plt>
+   fea50:	endbr64
+   fea54:	mov    rbx,rax
+   fea57:	jmp    10644 <_ZN6dmmeta21Cfast_ReadStrptrMaybeERNS_5CfastEN4algo6aryptrIcEE.cold>
+   fea5c:	nop    DWORD PTR [rax+0x0]
