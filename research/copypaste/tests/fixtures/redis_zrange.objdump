@@ -1,0 +1,217 @@
+# Redis ZRANGE wrapper family (6 members) -- regression fixture
+# fixture: extracted objdump -dl --no-show-raw-insn function blocks
+00000000000d96a0 <zrangeCommand>:
+zrangeCommand():
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3258
+   d96a0:	push   rbp
+   d96a1:	mov    rbp,rsp
+   d96a4:	sub    rsp,0x50
+zrangeResultHandlerInit():
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3124
+   d96a8:	xorps  xmm0,xmm0
+   d96ab:	movaps XMMWORD PTR [rbp-0x50],xmm0
+   d96af:	movaps XMMWORD PTR [rbp-0x30],xmm0
+   d96b3:	movaps XMMWORD PTR [rbp-0x40],xmm0
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3126
+   d96b7:	mov    QWORD PTR [rbp-0x48],rdi
+   d96bb:	lea    rax,[rip+0x2fce]        # dc690 <zrangeResultBeginClient>
+   d96c2:	mov    QWORD PTR [rbp-0x20],rax
+   d96c6:	lea    rax,[rip+0x3003]        # dc6d0 <zrangeResultFinalizeClient>
+   d96cd:	mov    QWORD PTR [rbp-0x18],rax
+   d96d1:	lea    rax,[rip+0x3028]        # dc700 <zrangeResultEmitCBufferToClient>
+   d96d8:	mov    QWORD PTR [rbp-0x10],rax
+   d96dc:	lea    rax,[rip+0x308d]        # dc770 <zrangeResultEmitLongLongToClient>
+   d96e3:	mov    QWORD PTR [rbp-0x8],rax
+   d96e7:	lea    rdi,[rbp-0x50]
+zrangeCommand():
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3261
+   d96eb:	mov    esi,0x1
+   d96f0:	xor    edx,edx
+   d96f2:	xor    ecx,ecx
+   d96f4:	xor    r8d,r8d
+   d96f7:	call   d91e0 <zrangeGenericCommand>
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3262
+   d96fc:	add    rsp,0x50
+   d9700:	pop    rbp
+   d9701:	ret
+   d9702:	data16 data16 data16 data16 cs nop WORD PTR [rax+rax*1+0x0]
+
+00000000000d9710 <zrevrangeCommand>:
+zrevrangeCommand():
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3265
+   d9710:	push   rbp
+   d9711:	mov    rbp,rsp
+   d9714:	sub    rsp,0x50
+zrangeResultHandlerInit():
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3124
+   d9718:	xorps  xmm0,xmm0
+   d971b:	movaps XMMWORD PTR [rbp-0x50],xmm0
+   d971f:	movaps XMMWORD PTR [rbp-0x30],xmm0
+   d9723:	movaps XMMWORD PTR [rbp-0x40],xmm0
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3126
+   d9727:	mov    QWORD PTR [rbp-0x48],rdi
+   d972b:	lea    rax,[rip+0x2f5e]        # dc690 <zrangeResultBeginClient>
+   d9732:	mov    QWORD PTR [rbp-0x20],rax
+   d9736:	lea    rax,[rip+0x2f93]        # dc6d0 <zrangeResultFinalizeClient>
+   d973d:	mov    QWORD PTR [rbp-0x18],rax
+   d9741:	lea    rax,[rip+0x2fb8]        # dc700 <zrangeResultEmitCBufferToClient>
+   d9748:	mov    QWORD PTR [rbp-0x10],rax
+   d974c:	lea    rax,[rip+0x301d]        # dc770 <zrangeResultEmitLongLongToClient>
+   d9753:	mov    QWORD PTR [rbp-0x8],rax
+   d9757:	lea    rdi,[rbp-0x50]
+zrevrangeCommand():
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3268
+   d975b:	mov    esi,0x1
+   d9760:	xor    edx,edx
+   d9762:	mov    ecx,0x1
+   d9767:	mov    r8d,0x2
+   d976d:	call   d91e0 <zrangeGenericCommand>
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3269
+   d9772:	add    rsp,0x50
+   d9776:	pop    rbp
+   d9777:	ret
+   d9778:	nop    DWORD PTR [rax+rax*1+0x0]
+
+00000000000d9bb0 <zrangebyscoreCommand>:
+zrangebyscoreCommand():
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3376
+   d9bb0:	push   rbp
+   d9bb1:	mov    rbp,rsp
+   d9bb4:	sub    rsp,0x50
+zrangeResultHandlerInit():
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3124
+   d9bb8:	xorps  xmm0,xmm0
+   d9bbb:	movaps XMMWORD PTR [rbp-0x50],xmm0
+   d9bbf:	movaps XMMWORD PTR [rbp-0x30],xmm0
+   d9bc3:	movaps XMMWORD PTR [rbp-0x40],xmm0
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3126
+   d9bc7:	mov    QWORD PTR [rbp-0x48],rdi
+   d9bcb:	lea    rax,[rip+0x2abe]        # dc690 <zrangeResultBeginClient>
+   d9bd2:	mov    QWORD PTR [rbp-0x20],rax
+   d9bd6:	lea    rax,[rip+0x2af3]        # dc6d0 <zrangeResultFinalizeClient>
+   d9bdd:	mov    QWORD PTR [rbp-0x18],rax
+   d9be1:	lea    rax,[rip+0x2b18]        # dc700 <zrangeResultEmitCBufferToClient>
+   d9be8:	mov    QWORD PTR [rbp-0x10],rax
+   d9bec:	lea    rax,[rip+0x2b7d]        # dc770 <zrangeResultEmitLongLongToClient>
+   d9bf3:	mov    QWORD PTR [rbp-0x8],rax
+   d9bf7:	lea    rdi,[rbp-0x50]
+zrangebyscoreCommand():
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3379
+   d9bfb:	mov    esi,0x1
+   d9c00:	xor    edx,edx
+   d9c02:	mov    ecx,0x2
+   d9c07:	mov    r8d,0x1
+   d9c0d:	call   d91e0 <zrangeGenericCommand>
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3380
+   d9c12:	add    rsp,0x50
+   d9c16:	pop    rbp
+   d9c17:	ret
+   d9c18:	nop    DWORD PTR [rax+rax*1+0x0]
+
+00000000000d9c20 <zrevrangebyscoreCommand>:
+zrevrangebyscoreCommand():
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3383
+   d9c20:	push   rbp
+   d9c21:	mov    rbp,rsp
+   d9c24:	sub    rsp,0x50
+zrangeResultHandlerInit():
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3124
+   d9c28:	xorps  xmm0,xmm0
+   d9c2b:	movaps XMMWORD PTR [rbp-0x50],xmm0
+   d9c2f:	movaps XMMWORD PTR [rbp-0x30],xmm0
+   d9c33:	movaps XMMWORD PTR [rbp-0x40],xmm0
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3126
+   d9c37:	mov    QWORD PTR [rbp-0x48],rdi
+   d9c3b:	lea    rax,[rip+0x2a4e]        # dc690 <zrangeResultBeginClient>
+   d9c42:	mov    QWORD PTR [rbp-0x20],rax
+   d9c46:	lea    rax,[rip+0x2a83]        # dc6d0 <zrangeResultFinalizeClient>
+   d9c4d:	mov    QWORD PTR [rbp-0x18],rax
+   d9c51:	lea    rax,[rip+0x2aa8]        # dc700 <zrangeResultEmitCBufferToClient>
+   d9c58:	mov    QWORD PTR [rbp-0x10],rax
+   d9c5c:	lea    rax,[rip+0x2b0d]        # dc770 <zrangeResultEmitLongLongToClient>
+   d9c63:	mov    QWORD PTR [rbp-0x8],rax
+   d9c67:	lea    rdi,[rbp-0x50]
+zrevrangebyscoreCommand():
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3386
+   d9c6b:	mov    esi,0x1
+   d9c70:	xor    edx,edx
+   d9c72:	mov    ecx,0x2
+   d9c77:	mov    r8d,0x2
+   d9c7d:	call   d91e0 <zrangeGenericCommand>
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3387
+   d9c82:	add    rsp,0x50
+   d9c86:	pop    rbp
+   d9c87:	ret
+   d9c88:	nop    DWORD PTR [rax+rax*1+0x0]
+
+00000000000da9a0 <zrangebylexCommand>:
+zrangebylexCommand():
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3647
+   da9a0:	push   rbp
+   da9a1:	mov    rbp,rsp
+   da9a4:	sub    rsp,0x50
+zrangeResultHandlerInit():
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3124
+   da9a8:	xorps  xmm0,xmm0
+   da9ab:	movaps XMMWORD PTR [rbp-0x50],xmm0
+   da9af:	movaps XMMWORD PTR [rbp-0x30],xmm0
+   da9b3:	movaps XMMWORD PTR [rbp-0x40],xmm0
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3126
+   da9b7:	mov    QWORD PTR [rbp-0x48],rdi
+   da9bb:	lea    rax,[rip+0x1cce]        # dc690 <zrangeResultBeginClient>
+   da9c2:	mov    QWORD PTR [rbp-0x20],rax
+   da9c6:	lea    rax,[rip+0x1d03]        # dc6d0 <zrangeResultFinalizeClient>
+   da9cd:	mov    QWORD PTR [rbp-0x18],rax
+   da9d1:	lea    rax,[rip+0x1d28]        # dc700 <zrangeResultEmitCBufferToClient>
+   da9d8:	mov    QWORD PTR [rbp-0x10],rax
+   da9dc:	lea    rax,[rip+0x1d8d]        # dc770 <zrangeResultEmitLongLongToClient>
+   da9e3:	mov    QWORD PTR [rbp-0x8],rax
+   da9e7:	lea    rdi,[rbp-0x50]
+zrangebylexCommand():
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3650
+   da9eb:	mov    esi,0x1
+   da9f0:	xor    edx,edx
+   da9f2:	mov    ecx,0x3
+   da9f7:	mov    r8d,0x1
+   da9fd:	call   d91e0 <zrangeGenericCommand>
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3651
+   daa02:	add    rsp,0x50
+   daa06:	pop    rbp
+   daa07:	ret
+   daa08:	nop    DWORD PTR [rax+rax*1+0x0]
+
+00000000000daa10 <zrevrangebylexCommand>:
+zrevrangebylexCommand():
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3654
+   daa10:	push   rbp
+   daa11:	mov    rbp,rsp
+   daa14:	sub    rsp,0x50
+zrangeResultHandlerInit():
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3124
+   daa18:	xorps  xmm0,xmm0
+   daa1b:	movaps XMMWORD PTR [rbp-0x50],xmm0
+   daa1f:	movaps XMMWORD PTR [rbp-0x30],xmm0
+   daa23:	movaps XMMWORD PTR [rbp-0x40],xmm0
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3126
+   daa27:	mov    QWORD PTR [rbp-0x48],rdi
+   daa2b:	lea    rax,[rip+0x1c5e]        # dc690 <zrangeResultBeginClient>
+   daa32:	mov    QWORD PTR [rbp-0x20],rax
+   daa36:	lea    rax,[rip+0x1c93]        # dc6d0 <zrangeResultFinalizeClient>
+   daa3d:	mov    QWORD PTR [rbp-0x18],rax
+   daa41:	lea    rax,[rip+0x1cb8]        # dc700 <zrangeResultEmitCBufferToClient>
+   daa48:	mov    QWORD PTR [rbp-0x10],rax
+   daa4c:	lea    rax,[rip+0x1d1d]        # dc770 <zrangeResultEmitLongLongToClient>
+   daa53:	mov    QWORD PTR [rbp-0x8],rax
+   daa57:	lea    rdi,[rbp-0x50]
+zrevrangebylexCommand():
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3657
+   daa5b:	mov    esi,0x1
+   daa60:	xor    edx,edx
+   daa62:	mov    ecx,0x3
+   daa67:	mov    r8d,0x2
+   daa6d:	call   d91e0 <zrangeGenericCommand>
+/home/aaslyan/cp-subjects/redis/src/t_zset.c:3658
+   daa72:	add    rsp,0x50
+   daa76:	pop    rbp
+   daa77:	ret
+   daa78:	nop    DWORD PTR [rax+rax*1+0x0]
