@@ -199,7 +199,9 @@ span eight functional categories (text processing, compression, file
 management, shells, interpreters, networking, editors, developer tools)
 and three orders of magnitude in size ($3{,}450$--$777{,}060$
 instructions), so the corpus exercises diverse code-generation patterns
-rather than one program family.  Crucially, representativeness is
+rather than one program family.
+
+Crucially, representativeness is
 \emph{tested} rather than assumed: every headline metric is replicated on
 the disjoint 40-binary coreutils-system superset, three independent
 corpora, and a 100-binary compiler matrix
@@ -381,7 +383,9 @@ unigram skew accounts for $0.306$ ($69\%$) and sequential order for
 $0.139$ ($31\%$).  LZ78 normalised complexity is $630$ (median, real)
 vs.\ $45{,}187$ (shuffled) and $87{,}881$ (random)---the relative
 separation, not absolute scale, is the diagnostic since $\tilde{c}$
-scales with $N/\log^2 N$.  Compression ratio decreases with binary size,
+scales with $N/\log^2 N$.
+
+Compression ratio decreases with binary size,
 but the effect's strength depends on the compressor ($N{=}15$).  Under
 \lzma{} the association is strong and significant
 (Spearman $\rho{=}{-}0.87$, $p{<}0.001$; Pearson $r{=}{-}0.67$,
@@ -698,6 +702,15 @@ and $5.0\%$ (\texttt{sed}) down to ${<}0.5\%$ for \texttt{git} and
 \texttt{vim}, suggesting hand-crafted code with unique control flow
 is less prone to accidental near-duplication.
 
+\emph{Scope.}  This module is a shingle-based approximate
+duplicate-region analysis, not a semantic clone detector.  Candidates are
+generated from opcode $k$-gram (shingle) overlap and validated by local
+alignment at \emph{function} granularity; the goal is to surface repeated
+or near-repeated instruction-sequence regions---which may correspond to
+source-level copy-paste, compiler-generated duplication, statically-linked
+library code, or repeated implementation idioms---not to assert semantic
+equivalence between fragments.
+
 % =============================================================================
 \section{Validation and Robustness}
 \label{sec:validation}
@@ -829,6 +842,7 @@ allocation, peephole optimisation produce characteristic idioms),
 characteristic inner-loop patterns visible as high-coverage motifs),
 and (iv)~clone reuse (linker-inserted stubs and shared libc helpers tile
 the manifold with exact or near-exact copies).
+
 Concentrated vocabulary
 (MLE $\hat{\alpha}{\approx}1.4$), rapidly decaying entropy rates, very
 high compressibility relative to baselines, and $d_{95}{\approx}8$
@@ -848,7 +862,9 @@ neighbours on the manifold.  Compression-based features provide a useful
 continuous similarity signal for binary retrieval and provenance without
 requiring disassembly beyond opcode extraction, but should not be
 expected to produce clean categorical partitions on heterogeneous
-corpora.  The clone detection results directly confirm this:
+corpora.
+
+The clone detection results directly confirm this:
 MinHash~+~LSH over opcode $k$-grams recovers 537 clone pairs with a
 $96.6\%$ confirmation rate, identifying four cross-binary families that
 correspond to known compiler prologue/libc stubs---without any symbol
@@ -923,7 +939,16 @@ signatures.
 neural models and quantify additional structure beyond trigrams.
 (v)~\emph{Security applications}: leverage the thin-manifold property
 for anomaly detection on packed/obfuscated binaries.
-(vi)~\emph{Clone-guided vulnerability propagation}: cross-binary clone
+(vi)~\emph{Sub-function fuzzy duplicate detection}: the present clone
+module operates at function granularity; a natural extension is
+\emph{intra-binary} approximate \emph{region} matching unbounded by
+function boundaries (e.g.\ self-alignment by seed-and-extend over opcode
+shingles), capturing copy-paste-like duplication where sequences are
+largely similar but contain local edits, register-allocation differences,
+or compiler-introduced instruction variation; pairing opcode-only with
+operand-aware streams would separate renamed copy-paste from verbatim
+library reuse, with DWARF line/symbol data as ground truth.
+(vii)~\emph{Clone-guided vulnerability propagation}: cross-binary clone
 families are natural candidates for tracking known-bad function
 propagation across binaries sharing toolchain or application clones.
 
